@@ -1,0 +1,189 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Heirloom GenApp Catalogue",
+  "type": "object",
+  "required": ["provenance", "screens", "tasks"],
+  "additionalProperties": false,
+  "properties": {
+    "provenance": {
+      "type": "object",
+      "required": ["repository", "commit", "extractionDate", "statement"],
+      "additionalProperties": false,
+      "properties": {
+        "repository": { "type": "string" },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "extractionDate": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "statement": { "type": "string" }
+      }
+    },
+    "screens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["mapsetName", "mapName", "transactionId", "title", "size", "presentationProgram", "sourceRef", "elements"],
+        "additionalProperties": false,
+        "properties": {
+          "mapsetName": { "type": "string" },
+          "mapName": { "type": "string" },
+          "transactionId": { "type": "string" },
+          "title": { "type": "string" },
+          "size": {
+            "type": "object",
+            "required": ["rows", "cols"],
+            "additionalProperties": false,
+            "properties": {
+              "rows": { "type": "integer", "const": 24 },
+              "cols": { "type": "integer", "const": 80 }
+            }
+          },
+          "presentationProgram": { "type": "string" },
+          "presentationProgramNote": { "type": "string" },
+          "sourceRef": { "$ref": "#/definitions/sourceRef" },
+          "elements": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/element" }
+          }
+        }
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/task" }
+    }
+  },
+  "definitions": {
+    "sourceRef": {
+      "type": "object",
+      "required": ["file", "lineStart", "lineEnd", "excerpt"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "lineStart": { "type": "integer", "minimum": 1 },
+        "lineEnd": { "type": "integer", "minimum": 1 },
+        "excerpt": { "type": "string" }
+      }
+    },
+    "element": {
+      "type": "object",
+      "required": ["elementId", "sourceOrder", "role", "row", "col", "length", "attrb", "protected", "numeric", "sourceRef"],
+      "additionalProperties": false,
+      "properties": {
+        "elementId": {
+          "type": "string",
+          "pattern": "^E-[A-Z0-9]+-[0-9]{3}$"
+        },
+        "sourceOrder": { "type": "integer", "minimum": 1 },
+        "bmsName": { "type": ["string", "null"] },
+        "fieldId": {
+          "type": "string",
+          "pattern": "^F-[A-Z0-9]+-[0-9]{3}$"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["title", "menuOption", "label", "hint", "input", "option", "error", "separator", "cannot-determine"]
+        },
+        "row": { "type": "integer", "minimum": 1, "maximum": 24 },
+        "col": { "type": "integer", "minimum": 1, "maximum": 80 },
+        "length": { "type": "integer", "minimum": 1 },
+        "attrb": { "type": "string" },
+        "protected": { "type": "boolean" },
+        "numeric": { "type": "boolean" },
+        "validn": { "type": ["string", "null"] },
+        "initialValue": { "type": ["string", "null"] },
+        "xinitValue": { "type": ["string", "null"] },
+        "justify": { "type": ["string", "null"] },
+        "humanLabel": { "type": ["string", "null"] },
+        "labelNote": { "type": "string" },
+        "labelSource": { "$ref": "#/definitions/sourceRef" },
+        "note": { "type": "string" },
+        "rules": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/rule" }
+        },
+        "sourceRef": { "$ref": "#/definitions/sourceRef" }
+      }
+    },
+    "task": {
+      "type": "object",
+      "required": ["taskId", "name", "outcome", "transactionId", "mapName", "operation", "optionKey", "allowedOptions", "legacySupportStatus", "modernParityStatus", "sourceEvidence"],
+      "additionalProperties": false,
+      "properties": {
+        "taskId": {
+          "type": "string",
+          "pattern": "^T-(SSC1|SSP[1-5])-[1-4]$"
+        },
+        "name": { "type": "string" },
+        "outcome": { "type": "string" },
+        "transactionId": { "type": "string" },
+        "mapName": { "type": "string" },
+        "operation": {
+          "type": "string",
+          "enum": ["inquire", "add", "update", "delete"]
+        },
+        "optionKey": { "type": "string" },
+        "allowedOptions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "legacySupportStatus": {
+          "type": "string",
+          "enum": ["map-and-program-confirmed", "screen-only-cannot-determine"]
+        },
+        "modernParityStatus": {
+          "type": "string",
+          "enum": ["not-assessed"]
+        },
+        "presentationProgram": { "type": ["string", "null"] },
+        "businessPrograms": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "sourceEvidence": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/sourceRef" }
+        },
+        "navigationVariants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["requestId", "condition"],
+            "additionalProperties": false,
+            "properties": {
+              "requestId": { "type": "string" },
+              "condition": { "type": "string" }
+            }
+          }
+        },
+        "note": { "type": "string" },
+        "rules": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/rule" }
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": ["ruleId", "type", "certainty", "plainEnglish", "sourceRef"],
+      "additionalProperties": false,
+      "properties": {
+        "ruleId": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["required", "numeric", "maxLength", "allowedValues", "formatHint", "transformRule", "validationCode"]
+        },
+        "certainty": {
+          "type": "string",
+          "enum": ["explicit", "inferred", "cannot-determine"]
+        },
+        "plainEnglish": { "type": "string" },
+        "sourceRef": { "$ref": "#/definitions/sourceRef" }
+      }
+    }
+  }
+}

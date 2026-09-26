@@ -1,0 +1,126 @@
+{
+  "runTimestamp": "2026-09-26T15:37:13.986127Z",
+  "overallStatus": "pass",
+  "checks": [
+    {
+      "id": "CHK-01",
+      "description": "catalogue/genapp.json parses as valid JSON",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-02",
+      "description": "catalogue/schema.json parses as valid JSON",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-03",
+      "description": "genapp.json validates against schema.json (Draft 7)",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-04",
+      "description": "Every cited source file exists",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-05",
+      "description": "Every cited line range is within the file's line count",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-06",
+      "description": "Every excerpt appears within its cited line range",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-07",
+      "description": "No duplicate taskIds",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-08",
+      "description": "No duplicate elementIds within any screen",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-09",
+      "description": "No duplicate fieldIds across all screens",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-10",
+      "description": "Exactly 6 screen objects",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-11",
+      "description": "Exactly 20 task objects",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-12",
+      "description": "Exactly 18 map-and-program-confirmed tasks",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-13",
+      "description": "Exactly 2 screen-only-cannot-determine tasks",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-14",
+      "description": "All tasks have modernParityStatus == not-assessed",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-15",
+      "description": "All element coordinates within 24x80 grid",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-16",
+      "description": "SSMAPC1 has exactly 12 named fields (bmsName not null)",
+      "status": "pass",
+      "detail": "Found: ['ENT1CNO', 'ENT1FNA', 'ENT1LNA', 'ENT1DOB', 'ENT1HNM', 'ENT1HNO', 'ENT1HPC', 'ENT1HP1', 'ENT1HP2', 'ENT1HMO', 'ENT1OPT', 'ERRFLD']"
+    },
+    {
+      "id": "CHK-17",
+      "description": "SSMAPC1 has exactly 11 editable named fields (UNPROT)",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-18",
+      "description": "SSMAPC1 has exactly 10 clerk data-entry fields (UNPROT, not option)",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-19",
+      "description": "SSMAPC1 has exactly 1 protected named field (error/display)",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "id": "CHK-20",
+      "description": "Per-transaction allowedOptions match exact sets",
+      "status": "pass",
+      "detail": ""
+    }
+  ]
+}
