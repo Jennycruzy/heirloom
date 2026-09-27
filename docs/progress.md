@@ -99,7 +99,32 @@ gap was introduced.
 
 ## Stage 4 — The certain layer
 
-Not started.
+**Completed: 2026-09-27**
+
+Deterministic checks now compare the committed SSC1 and SSP1 catalogue with the
+modern database definitions and browser form. No model judgement is used and
+the catalogue is not modified.
+
+**Verified:**
+- `python3 parity/check.py` passed all 14 checks.
+- Confirmed task operations match the UI exactly: three customer actions and
+  four motor-policy actions.
+- Both BMS input sets map exactly to the modern field sets and maximum lengths.
+- No numeric-only restriction is invented for catalogue fields marked
+  non-numeric.
+- Every browser input has the exact API name, text type, and verified maximum
+  length.
+- The 10 Stage 3 application tests and the Stage 2 dashboard tests still pass.
+
+**Artefacts:**
+- Checker: [`parity/check.py`](../parity/check.py)
+- Explicit BMS mapping: [`parity/mapping.json`](../parity/mapping.json)
+- Machine-readable result: [`parity/result.json`](../parity/result.json)
+- Usage and scope: [`parity/README.md`](../parity/README.md)
+
+The previously committed Stage 1 validation result remains 20/20 passed. Its
+optional validator was not rerun during Stage 4 because `jsonschema` is not
+installed in the current standard-library application environment.
 
 ---
 

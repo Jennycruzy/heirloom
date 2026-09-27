@@ -1,0 +1,251 @@
+{
+  "generatedOn": "2026-09-27",
+  "scope": [
+    "SSC1",
+    "SSP1"
+  ],
+  "method": "deterministic",
+  "catalogueChanged": false,
+  "legacyExecuted": false,
+  "summary": {
+    "total": 14,
+    "passed": 14,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "id": "SSC1-map",
+      "description": "Catalogue map identity matches the verified mapping",
+      "status": "pass",
+      "expected": "SSMAPC1",
+      "actual": "SSMAPC1"
+    },
+    {
+      "id": "SSC1-operations-catalogue",
+      "description": "Modern operation scope equals confirmed catalogue tasks",
+      "status": "pass",
+      "expected": [
+        "inquire",
+        "add",
+        "update"
+      ],
+      "actual": [
+        "inquire",
+        "add",
+        "update"
+      ]
+    },
+    {
+      "id": "SSC1-operations-html",
+      "description": "HTML task selector exposes exactly the confirmed operations",
+      "status": "pass",
+      "expected": [
+        "inquire",
+        "add",
+        "update"
+      ],
+      "actual": [
+        "inquire",
+        "add",
+        "update"
+      ]
+    },
+    {
+      "id": "SSC1-field-set",
+      "description": "Mapped catalogue inputs equal the modern database field set",
+      "status": "pass",
+      "expected": {
+        "customer_number": 10,
+        "first_name": 10,
+        "last_name": 20,
+        "date_of_birth": 10,
+        "house_name": 20,
+        "house_number": 4,
+        "postcode": 8,
+        "home_phone": 20,
+        "mobile_phone": 20,
+        "email": 27
+      },
+      "actual": {
+        "customer_number": 10,
+        "first_name": 10,
+        "last_name": 20,
+        "date_of_birth": 10,
+        "house_name": 20,
+        "house_number": 4,
+        "postcode": 8,
+        "home_phone": 20,
+        "mobile_phone": 20,
+        "email": 27
+      }
+    },
+    {
+      "id": "SSC1-numeric",
+      "description": "No numeric-only rule is invented for non-numeric catalogue inputs",
+      "status": "pass",
+      "expected": [],
+      "actual": []
+    },
+    {
+      "id": "SSC1-html-fields",
+      "description": "HTML contains every exact field name and catalogue maximum length",
+      "status": "pass",
+      "expected": {
+        "customer_number": 10,
+        "first_name": 10,
+        "last_name": 20,
+        "date_of_birth": 10,
+        "house_name": 20,
+        "house_number": 4,
+        "postcode": 8,
+        "home_phone": 20,
+        "mobile_phone": 20,
+        "email": 27
+      },
+      "actual": {
+        "customer_number": 10,
+        "first_name": 10,
+        "last_name": 20,
+        "date_of_birth": 10,
+        "house_name": 20,
+        "house_number": 4,
+        "postcode": 8,
+        "home_phone": 20,
+        "mobile_phone": 20,
+        "email": 27
+      }
+    },
+    {
+      "id": "SSC1-html-types",
+      "description": "Catalogue data inputs remain unrestricted text controls",
+      "status": "pass",
+      "expected": [],
+      "actual": []
+    },
+    {
+      "id": "SSP1-map",
+      "description": "Catalogue map identity matches the verified mapping",
+      "status": "pass",
+      "expected": "SSMAPP1",
+      "actual": "SSMAPP1"
+    },
+    {
+      "id": "SSP1-operations-catalogue",
+      "description": "Modern operation scope equals confirmed catalogue tasks",
+      "status": "pass",
+      "expected": [
+        "inquire",
+        "add",
+        "delete",
+        "update"
+      ],
+      "actual": [
+        "inquire",
+        "add",
+        "delete",
+        "update"
+      ]
+    },
+    {
+      "id": "SSP1-operations-html",
+      "description": "HTML task selector exposes exactly the confirmed operations",
+      "status": "pass",
+      "expected": [
+        "inquire",
+        "add",
+        "delete",
+        "update"
+      ],
+      "actual": [
+        "inquire",
+        "add",
+        "delete",
+        "update"
+      ]
+    },
+    {
+      "id": "SSP1-field-set",
+      "description": "Mapped catalogue inputs equal the modern database field set",
+      "status": "pass",
+      "expected": {
+        "policy_number": 10,
+        "customer_number": 10,
+        "issue_date": 10,
+        "expiry_date": 10,
+        "car_make": 20,
+        "car_model": 20,
+        "car_value": 6,
+        "registration": 7,
+        "car_colour": 8,
+        "engine_cc": 8,
+        "manufacture_date": 10,
+        "accident_count": 6,
+        "policy_premium": 6
+      },
+      "actual": {
+        "policy_number": 10,
+        "customer_number": 10,
+        "issue_date": 10,
+        "expiry_date": 10,
+        "car_make": 20,
+        "car_model": 20,
+        "car_value": 6,
+        "registration": 7,
+        "car_colour": 8,
+        "engine_cc": 8,
+        "manufacture_date": 10,
+        "accident_count": 6,
+        "policy_premium": 6
+      }
+    },
+    {
+      "id": "SSP1-numeric",
+      "description": "No numeric-only rule is invented for non-numeric catalogue inputs",
+      "status": "pass",
+      "expected": [],
+      "actual": []
+    },
+    {
+      "id": "SSP1-html-fields",
+      "description": "HTML contains every exact field name and catalogue maximum length",
+      "status": "pass",
+      "expected": {
+        "policy_number": 10,
+        "customer_number": 10,
+        "issue_date": 10,
+        "expiry_date": 10,
+        "car_make": 20,
+        "car_model": 20,
+        "car_value": 6,
+        "registration": 7,
+        "car_colour": 8,
+        "engine_cc": 8,
+        "manufacture_date": 10,
+        "accident_count": 6,
+        "policy_premium": 6
+      },
+      "actual": {
+        "policy_number": 10,
+        "customer_number": 10,
+        "issue_date": 10,
+        "expiry_date": 10,
+        "car_make": 20,
+        "car_model": 20,
+        "car_value": 6,
+        "registration": 7,
+        "car_colour": 8,
+        "engine_cc": 8,
+        "manufacture_date": 10,
+        "accident_count": 6,
+        "policy_premium": 6
+      }
+    },
+    {
+      "id": "SSP1-html-types",
+      "description": "Catalogue data inputs remain unrestricted text controls",
+      "status": "pass",
+      "expected": [],
+      "actual": []
+    }
+  ]
+}

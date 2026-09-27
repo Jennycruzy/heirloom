@@ -1,0 +1,39 @@
+{
+  "SSC1": {
+    "mapName": "SSMAPC1",
+    "entity": "customer",
+    "operations": ["inquire", "add", "update"],
+    "fields": {
+      "ENT1CNO": "customer_number",
+      "ENT1FNA": "first_name",
+      "ENT1LNA": "last_name",
+      "ENT1DOB": "date_of_birth",
+      "ENT1HNM": "house_name",
+      "ENT1HNO": "house_number",
+      "ENT1HPC": "postcode",
+      "ENT1HP1": "home_phone",
+      "ENT1HP2": "mobile_phone",
+      "ENT1HMO": "email"
+    }
+  },
+  "SSP1": {
+    "mapName": "SSMAPP1",
+    "entity": "motor",
+    "operations": ["inquire", "add", "delete", "update"],
+    "fields": {
+      "ENP1PNO": "policy_number",
+      "ENP1CNO": "customer_number",
+      "ENP1IDA": "issue_date",
+      "ENP1EDA": "expiry_date",
+      "ENP1CMK": "car_make",
+      "ENP1CMO": "car_model",
+      "ENP1VAL": "car_value",
+      "ENP1REG": "registration",
+      "ENP1COL": "car_colour",
+      "ENP1CC": "engine_cc",
+      "ENP1MAN": "manufacture_date",
+      "ENP1ACC": "accident_count",
+      "ENP1PRE": "policy_premium"
+    }
+  }
+}
