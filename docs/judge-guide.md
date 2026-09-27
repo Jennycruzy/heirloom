@@ -31,6 +31,16 @@ These gaps were not inserted for the demo. The pre-review version is preserved
 at Git tag `stage3-first-pass`. Exact legacy and modern citations are in
 [`docs/reports/stage5-evidence-audit.md`](reports/stage5-evidence-audit.md).
 
+## The repair result
+
+All six differences were captured by regression checks that failed before the
+repair and passed afterward. The repaired application passed 15/15 application
+checks, the exact catalogue comparison remained 14/14, three workflows were
+confirmed in a browser, and Bob independently returned `READY` after checking
+the cited legacy and modern lines. The exact legacy identifier sequence and
+motor-delete not-found behavior remain explicitly uncertain and are not
+claimed as matches.
+
 ## What to inspect
 
 - Catalogue result: [`catalogue/validation-result.json`](../catalogue/validation-result.json)
@@ -41,6 +51,8 @@ at Git tag `stage3-first-pass`. Exact legacy and modern citations are in
 - Machine comparison: [`parity/result.json`](../parity/result.json)
 - Original Bob report: [`docs/reports/stage5-bob-semantic-review.md`](reports/stage5-bob-semantic-review.md)
 - Corrected evidence audit: [`docs/reports/stage5-evidence-audit.md`](reports/stage5-evidence-audit.md)
+- Before/after repair evidence: [`docs/reports/stage6-before-fix.md`](reports/stage6-before-fix.md) and [`docs/reports/stage6-after-fix.md`](reports/stage6-after-fix.md)
+- Final Bob review: [`docs/reports/stage6-bob-final-review.md`](reports/stage6-bob-final-review.md)
 
 ## Evidence boundary
 

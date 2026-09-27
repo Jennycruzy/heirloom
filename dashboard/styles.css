@@ -38,6 +38,18 @@ header p {
   margin-bottom: 1rem;
 }
 
+.judge-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.judge-nav a {
+  color: #78a9ff;
+  text-underline-offset: 0.2rem;
+}
+
 main {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.42fr);

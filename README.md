@@ -44,12 +44,13 @@ part of the modernization scope.
 
 | Evidence | Measured result |
 | --- | --- |
+| Workflow differences found before repair | **6 source-proven gaps**: generated identifiers, retrieve-before-edit updates, and composite policy identification |
+| Repaired application | **15/15** database, API, HTTP, and workflow checks passed |
+| Independent final Bob review | **READY** — all six repairs confirmed against cited source and modern code |
 | Legacy catalogue validation | 20/20 checks passed |
 | Screen reconstruction | 6 screens, each exactly 24×80 |
 | Catalogue actions | 20 visible actions: 18 program-confirmed, 2 explicitly uncertain |
-| First modern application | 10 database/API/HTTP tests passed |
 | Exact catalogue-to-modern comparison | 14/14 checks passed |
-| Workflow-meaning review | 5 matches and 6 source-proven gaps identified before repair |
 
 The six gaps are valuable findings, not planted defects. They concern generated
 identifiers, retrieve-before-edit updates, and the customer-plus-policy key used
@@ -64,7 +65,8 @@ Start with:
 - [Verified legacy catalogue](catalogue/genapp.json)
 - [Deterministic parity result](parity/result.json)
 - [Workflow evidence audit](docs/reports/stage5-evidence-audit.md)
-- [Bob review evidence](bob_sessions/heirloom_stage5_bob_final_result.jpeg)
+- [Final Bob review](docs/reports/stage6-bob-final-review.md)
+- [Bob READY evidence](bob_sessions/jenny_builds_task06_final_repair_review.png)
 
 ## Run locally
 
@@ -101,8 +103,10 @@ documented under `catalogue/scripts/`; its committed result is
 
 ## How AI was used
 
-- IBM Bob performed source-oriented planning and semantic review with separate
-  customer and motor-policy reviewers.
+- IBM Bob performed source-oriented planning, launched separate customer and
+  motor-policy semantic reviewers, and independently reviewed the repaired
+  branch against cited COBOL, tests, and browser evidence before returning
+  `READY`.
 - watsonx.ai Granite supplied documented fallback drafts while Bob usage was
   reserved for evidence-heavy review.
 - Deterministic scripts, source citations, browser checks, and human review
@@ -127,10 +131,10 @@ No model result is treated as proof by itself.
 ## Current status
 
 Source extraction, screen reconstruction, first implementation, deterministic
-comparison, and workflow review are complete. Evidence-driven repairs, final
-independent review, deployment, CI, measurements, and submission packaging are
-still in progress; [docs/progress.md](docs/progress.md) is the authoritative
-status record.
+comparison, evidence-driven repairs, human browser checks, and Bob's final
+independent review are complete. Deployment and submission packaging are in
+progress; [docs/progress.md](docs/progress.md) is the authoritative status
+record.
 
 ## Security and provenance
 

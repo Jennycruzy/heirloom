@@ -151,8 +151,8 @@ The original Bob report is preserved unchanged alongside the audit.
 - Bob recovery instruction: [`docs/prompts/stage5-bob-finish-now.md`](prompts/stage5-bob-finish-now.md)
 - Original Bob report: [`docs/reports/stage5-bob-semantic-review.md`](reports/stage5-bob-semantic-review.md)
 - Evidence audit: [`docs/reports/stage5-evidence-audit.md`](reports/stage5-evidence-audit.md)
-- Bob session evidence: [`bob_sessions/heirloom_stage5_bob_parallel_review.jpeg`](../bob_sessions/heirloom_stage5_bob_parallel_review.jpeg)
-- Bob final-result evidence: [`bob_sessions/heirloom_stage5_bob_final_result.jpeg`](../bob_sessions/heirloom_stage5_bob_final_result.jpeg)
+- Bob session evidence: [`bob_sessions/jenny_builds_task05_parallel_semantic_review.png`](../bob_sessions/jenny_builds_task05_parallel_semantic_review.png)
+- Bob final-result evidence: [`bob_sessions/jenny_builds_task05_semantic_review_result.png`](../bob_sessions/jenny_builds_task05_semantic_review_result.png)
 
 ---
 
@@ -187,7 +187,7 @@ legacy identifier sequence and the ambiguous motor-delete not-found behavior.
 - Before evidence: [`docs/reports/stage6-before-fix.md`](reports/stage6-before-fix.md)
 - After evidence: [`docs/reports/stage6-after-fix.md`](reports/stage6-after-fix.md)
 - Final Bob review: [`docs/reports/stage6-bob-final-review.md`](reports/stage6-bob-final-review.md)
-- Bob `READY` evidence: [`bob_sessions/heirloom_stage6_bob_ready.jpeg`](../bob_sessions/heirloom_stage6_bob_ready.jpeg)
+- Bob `READY` evidence: [`bob_sessions/jenny_builds_task06_final_repair_review.png`](../bob_sessions/jenny_builds_task06_final_repair_review.png)
 
 ---
 

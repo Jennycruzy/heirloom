@@ -7,6 +7,11 @@ h1 { margin-bottom: .35rem; font-size: clamp(2rem, 4vw, 3.25rem); }
 .eyebrow, .transaction { margin-bottom: .35rem; color: #78a9ff; font-size: .78rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
 .lede { margin-bottom: 1rem; color: #d6e4f5; font-size: 1.1rem; }
 .notice, .provenance { display: inline-block; margin: .25rem; padding: .45rem .75rem; border-radius: 999px; background: #132c47; color: #d6e4f5; font-size: .85rem; }
+.judge-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: .75rem; margin: 1rem 0; }
+.judge-nav a { color: #fff; text-underline-offset: .2rem; }
+.proof-strip { display: flex; justify-content: center; flex-wrap: wrap; gap: .6rem; }
+.proof-strip span { padding: .6rem .8rem; border: 1px solid #365b80; border-radius: .45rem; background: rgba(7, 23, 38, .8); color: #d6e4f5; }
+.proof-strip strong { color: #78a9ff; }
 main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; width: min(1500px, 100%); margin: 0 auto; padding: 1.25rem; }
 #app-status { grid-column: 1 / -1; min-height: 0; border-radius: .5rem; }
 .status--success, .status--error { padding: .8rem 1rem; border: 1px solid; }
