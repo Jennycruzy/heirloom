@@ -216,13 +216,13 @@ applications were not stopped or replaced.
 **Completed: 2026-09-27**
 
 `python3 scripts/verify.py` runs every suite and publishes the measured result
-to `evidence/verification.json`, which the public landing page reads. GitHub
-Actions runs the same command on every push. A new citation check confirms
+to `evidence/verification.json`, which the public verification page reads.
+CircleCI runs the same command on every push. A new citation check confirms
 that all 67 published source references resolve to real lines.
 
 **Verified:**
-- Full verification: 113/113 across six suites (citations 67/67, parity 14/14,
-  application 20/20, workflows 5/5, screens, syntax 6/6).
+- Full verification: 118/118 across six suites (citations 67/67, parity 14/14,
+  application 21/21, workflows 5/5, screens, syntax 10/10).
 - Dashboard source links, previously 404 because they pointed at submodule
   paths inside this repository, now open the pinned upstream GenApp file.
 - Updating a missing customer now returns 404; its new check failed before the
@@ -238,7 +238,7 @@ that all 67 published source references resolve to real lines.
 - Citation check: [`scripts/check_citations.py`](../scripts/check_citations.py)
 - Findings with citations: [`evidence/findings.json`](../evidence/findings.json)
 - Published result: [`evidence/verification.json`](../evidence/verification.json)
-- CI workflow: [`.github/workflows/verify.yml`](../.github/workflows/verify.yml)
+- CI configuration: [`.circleci/config.yml`](../.circleci/config.yml)
 - Record: [`docs/reports/stage8-verification.md`](reports/stage8-verification.md)
 - Timing measurement and limitations: [`docs/reports/stage8-measurements.md`](reports/stage8-measurements.md)
 

@@ -8,12 +8,14 @@ workflow parity.
 
 ## The demonstration
 
-- Overview, findings and live verification: <https://heirloom.54-154-121-30.sslip.io/>
+- Overview: <https://heirloom.54-154-121-30.sslip.io/>
+- Findings with source citations: <https://heirloom.54-154-121-30.sslip.io/findings/>
+- Latest verification result: <https://heirloom.54-154-121-30.sslip.io/verification/>
 - Clerk workspace with a live legacy trace: <https://heirloom.54-154-121-30.sslip.io/app/>
 - Reconstructed legacy screens with a field inspector:
   <https://heirloom.54-154-121-30.sslip.io/dashboard/>
 
-A two-minute path: open the overview and expand any finding to follow its
+A two-minute path: open the findings page and expand any finding to follow its
 COBOL lines; then open
 <https://heirloom.54-154-121-30.sslip.io/app/#motor/inquire/POL001/CUST000002>
 and watch a policy stay hidden from a customer who does not hold it.

@@ -15,7 +15,10 @@ python3 modern-app/server.py --port 8080
 
 | URL | Page |
 | --- | --- |
-| <http://127.0.0.1:8080/> | Project overview and findings |
+| <http://127.0.0.1:8080/> | Project overview |
+| <http://127.0.0.1:8080/findings/> | Findings with citations |
+| <http://127.0.0.1:8080/method/> | Method |
+| <http://127.0.0.1:8080/verification/> | Latest verification result |
 | <http://127.0.0.1:8080/app/> | Clerk workspace |
 | <http://127.0.0.1:8080/dashboard/> | Reconstructed legacy screens |
 | <http://127.0.0.1:8080/api/health> | Health check with record counts |

@@ -7,19 +7,19 @@ Date: 27 September 2026
 `python3 scripts/verify.py` runs every check and writes
 [`evidence/verification.json`](../../evidence/verification.json). The record
 names the commit it ran against, whether the working tree was clean, the pinned
-GenApp commit, and each suite's measured pass count and duration. The landing
+GenApp commit, and each suite's measured pass count and duration. The verification
 page reads this file; it never shows a number that was not produced by a run.
-`.github/workflows/verify.yml` runs the same command on every push.
+`.circleci/config.yml` runs the same command on CircleCI for every push.
 
 | Suite | Result | Checks |
 | --- | --- | --- |
 | Citations | pass | 67/67 |
 | Parity | pass | 14/14 |
-| Application | pass | 20/20 |
+| Application | pass | 21/21 |
 | Workflows | pass | 5/5 |
 | Screens | pass | 1/1 (6 screens, 24×80 each) |
-| Syntax | pass | 6/6 |
-| **Total** | **pass** | **113/113** |
+| Syntax | pass | 10/10 |
+| **Total** | **pass** | **118/118** |
 
 ## New citation check
 

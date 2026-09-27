@@ -52,7 +52,7 @@ part of the modernization scope.
 | Screen reconstruction | 6 screens, each exactly 24×80 |
 | Catalogue actions | 20 visible actions: 18 program-confirmed, 2 explicitly uncertain |
 | Exact catalogue-to-modern comparison | 14/14 checks passed |
-| Current full verification | **113/113** across six suites, including 67 resolved source citations ([record](evidence/verification.json)) |
+| Current full verification | **118/118** across six suites, including 67 resolved source citations ([record](evidence/verification.json)) |
 
 The six gaps are valuable findings, not planted defects. They concern generated
 identifiers, retrieve-before-edit updates, and the customer-plus-policy key used
@@ -91,9 +91,12 @@ One server provides everything from a single origin:
 
 | URL | What it shows |
 | --- | --- |
-| <http://127.0.0.1:8080/> | The story, the six findings with source links, live verification |
-| <http://127.0.0.1:8080/app/> | The repaired clerk workspace with a live legacy trace |
+| <http://127.0.0.1:8080/> | Overview: the question, the result, and the way into each section |
+| <http://127.0.0.1:8080/findings/> | The six findings, each with legacy, first-pass and regression-check citations |
+| <http://127.0.0.1:8080/method/> | The seven steps and who decides what: scripts, models or people |
+| <http://127.0.0.1:8080/verification/> | The latest measured result of every check |
 | <http://127.0.0.1:8080/dashboard/> | All six GenApp maps rebuilt on a 24×80 grid, with a field inspector |
+| <http://127.0.0.1:8080/app/> | The repaired clerk workspace with a live legacy trace |
 
 The invented identifiers are customers `CUST000001` and `CUST000002`, and
 policy `POL001` held by `CUST000001`. Try
@@ -107,9 +110,11 @@ python3 scripts/verify.py
 ```
 
 This runs every check and publishes the measured result to
-[`evidence/verification.json`](evidence/verification.json), which the landing
-page reads. The record names the commit it ran against and whether the working
-tree was clean. The same command runs in GitHub Actions on every push.
+[`evidence/verification.json`](evidence/verification.json), which the
+[verification page](https://heirloom.54-154-121-30.sslip.io/verification/)
+reads. The record names the commit it ran against and whether the working tree
+was clean. The same command runs on CircleCI for every push
+(`.circleci/config.yml`).
 
 | Suite | What it proves |
 | --- | --- |
@@ -161,7 +166,7 @@ they are not claimed as retroactive evidence for earlier sessions.
 | `legacy/cics-genapp/` | Read-only IBM GenApp submodule pinned to a known commit |
 | `catalogue/` | Source-derived screens, tasks, rules, schema, and validation result |
 | `evidence/` | Machine-readable findings with citations, and the published verification record |
-| `site/` | Landing page and the shared design system (IBM Plex, OFL) |
+| `site/` | Overview, Findings, Method and Verification pages, and the shared design system (IBM Plex, OFL) |
 | `dashboard/` | Exact 24×80 legacy-screen reconstruction and field inspector |
 | `modern-app/` | Scoped standard-library modernization, site server, and tests |
 | `parity/` | Deterministic catalogue-to-modern comparisons |
