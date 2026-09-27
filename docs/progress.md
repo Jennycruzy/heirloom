@@ -31,7 +31,31 @@ No unresolved catalogue mismatch found in the SSMAPC1 manual check.
 
 ## Stage 2 — Show the old screens
 
-Not started.
+**Completed: 2026-09-27**
+
+The dependency-free dashboard loads the committed Stage 1 catalogue at runtime
+and reconstructs every legacy map on an exact 24×80 character grid. The old
+system is still read from source; no mainframe was run.
+
+**Verified:**
+- `node dashboard/test.mjs` passed: 6 screens, 20 actions, 18 confirmed tasks,
+  and 2 cannot-determine actions.
+- Every catalogue screen composes to exactly 24 rows of 80 characters.
+- Customer screen SSMAPC1 rendered recognisably.
+- Motor-policy screen SSMAPP1 rendered recognisably.
+- No modern parity pass/fail result is shown; Stage 1 remains `not-assessed`.
+
+**Artefacts:**
+- Dashboard: [`dashboard/index.html`](../dashboard/index.html)
+- Renderer library: [`dashboard/lib.mjs`](../dashboard/lib.mjs)
+- Deterministic tests: [`dashboard/test.mjs`](../dashboard/test.mjs)
+- SSC1 evidence: [`watsonx_sessions/heirloom_stage2_ssc1_reconstruction.jpeg`](../watsonx_sessions/heirloom_stage2_ssc1_reconstruction.jpeg)
+- SSP1 evidence: [`watsonx_sessions/heirloom_stage2_ssp1_reconstruction.jpeg`](../watsonx_sessions/heirloom_stage2_ssp1_reconstruction.jpeg)
+
+Watsonx.ai Granite was used as the documented fallback after Bobcoin usage was
+reserved for later Bob tasks. Granite generation evidence is stored in
+`watsonx_sessions/`; small runtime and accessibility defects were corrected
+locally and the corrected files were tested before this stage was marked complete.
 
 ---
 

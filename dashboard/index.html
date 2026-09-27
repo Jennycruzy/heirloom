@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heirloom Dashboard</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header>
+    <h1>Heirloom</h1>
+    <p>The tests pass. Can the clerk still do their job?</p>
+    <p>The legacy application was read from source; no mainframe was run.</p>
+  </header>
+
+  <main>
+    <section id="data-status" role="status" aria-live="polite">
+      <p>Loading…</p>
+    </section>
+
+    <section class="count-section" aria-labelledby="counts-title">
+      <h2 id="counts-title">Source catalogue</h2>
+      <div class="count-grid">
+        <div class="count-card" id="screen-count">—</div>
+        <div class="count-card" id="task-count">—</div>
+        <div class="count-card" id="confirmed-count">—</div>
+        <div class="count-card" id="uncertain-count">—</div>
+      </div>
+    </section>
+
+    <section id="current-scope">
+      <h2>Current scope</h2>
+      <p>The dashboard currently proves source extraction and screen reconstruction only; modernization and browser parity checks are not yet implemented.</p>
+    </section>
+
+    <section class="control-panel screen-control">
+      <label for="screen-select">Screen</label>
+      <select id="screen-select">
+        <option>Loading…</option>
+      </select>
+    </section>
+
+    <section class="control-panel task-control">
+      <label for="task-select">Task</label>
+      <select id="task-select">
+        <option>Loading…</option>
+      </select>
+    </section>
+
+    <section id="screen-heading" class="screen-heading">
+      <h2 id="screen-title">Loading…</h2>
+    </section>
+
+    <section class="terminal-scroll" aria-labelledby="screen-title">
+      <div id="terminal-grid" class="terminal-grid" role="img" aria-label="Reconstructed 24 row by 80 column legacy screen"></div>
+    </section>
+
+    <aside class="terminal-legend" aria-label="Screen legend">
+      <p>Legend:</p>
+      <ul>
+        <li>Protected text: <span class="cell cell--protected">█</span></li>
+        <li>Editable field: <span class="cell cell--editable">_</span></li>
+        <li>Menu option: <span class="cell cell--menu-option">▓</span></li>
+        <li>Cursor field: <span class="cell cell--cursor">█</span></li>
+        <li>Error field: <span class="cell cell--error">!</span></li>
+      </ul>
+    </aside>
+
+    <section id="task-details">
+      <h2 id="task-name">Loading…</h2>
+      <p id="task-status">Loading…</p>
+      <p id="task-outcome">Loading…</p>
+      <p id="task-operation">Loading…</p>
+      <p id="task-legacy-status">Loading…</p>
+      <p id="task-modern-status">Loading…</p>
+      <p id="task-programs">Loading…</p>
+      <p id="task-note">Loading…</p>
+      <div id="task-evidence">Loading…</div>
+    </section>
+  </main>
+
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>

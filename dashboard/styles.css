@@ -1,0 +1,266 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #fff;
+  background: #071526;
+}
+
+body {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.5rem clamp(1rem, 3vw, 3rem) 3rem;
+  background:
+    radial-gradient(circle at 50% -15%, rgba(69, 137, 255, 0.2), transparent 38rem),
+    #071526;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+header h1 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  margin-bottom: 1rem;
+}
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.42fr);
+  gap: 1rem 1.5rem;
+}
+
+.count-section,
+#current-scope,
+.control-panel,
+.terminal-legend,
+#task-details {
+  border: 1px solid #23496f;
+  border-radius: 0.65rem;
+  background: #0b2138;
+  padding: 1rem;
+}
+
+.count-section {
+  grid-column: 1 / -1;
+}
+
+.count-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.count-card {
+  display: grid;
+  place-items: center;
+  min-height: 4.5rem;
+  background: #0f62fe;
+  color: #fff;
+  padding: 0.75rem;
+  text-align: center;
+  border-radius: 0.35rem;
+}
+
+#data-status {
+  grid-column: 1 / -1;
+  min-height: 0;
+}
+
+.status--error {
+  background: #d32f2f;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.status--ok {
+  background: #164b35;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.status--uncertain {
+  background: #fbc02d;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+#current-scope {
+  grid-column: 1 / -1;
+}
+
+#current-scope h2,
+.count-section h2 {
+  margin-bottom: 0.4rem;
+}
+
+.screen-control {
+  grid-column: 1;
+}
+
+.task-control {
+  grid-column: 2;
+}
+
+select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #fff;
+  border-radius: 0.5rem;
+  background: #071526;
+  color: #fff;
+}
+
+.screen-heading {
+  grid-column: 1 / -1;
+  margin-top: 0.5rem;
+}
+
+#screen-title {
+  margin: 0;
+}
+
+.terminal-scroll {
+  grid-column: 1 / -1;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 1rem;
+  border: 1px solid #1d7045;
+  border-radius: 0.65rem;
+  background: #020805;
+  box-shadow: inset 0 0 2rem rgba(35, 255, 118, 0.06);
+}
+
+.terminal-grid {
+  display: grid;
+  grid-template-columns: repeat(80, 1ch);
+  grid-auto-rows: 1.4rem;
+  font-size: 1rem;
+  line-height: 1.15;
+  color: #62ff9b;
+  background: #020805;
+  width: max-content;
+  min-width: max-content;
+}
+
+.cell {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 1ch;
+  border: 0;
+}
+
+.cell--editable {
+  background: #123729;
+  box-shadow: inset 0 -1px #62ff9b;
+}
+
+.cell--protected {
+  color: #62ff9b;
+}
+
+.cell--menu-option {
+  color: #d4ffe2;
+  font-weight: 700;
+}
+
+.cell--cursor {
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+}
+
+.cell--error {
+  background: #d32f2f;
+  color: #fff;
+  border: 1px solid #b71c1c;
+}
+
+.terminal-legend {
+  grid-column: 2;
+  font-size: 0.9rem;
+}
+
+.terminal-legend ul {
+  list-style: none;
+}
+
+.terminal-legend li {
+  margin-bottom: 0.5rem;
+}
+
+#task-details {
+  grid-column: 1;
+  grid-row: span 2;
+}
+
+#task-details p {
+  margin-bottom: 0.5rem;
+}
+
+#task-evidence a {
+  color: #78a9ff;
+}
+
+#task-evidence ul {
+  margin: 0.5rem 0 0 1.25rem;
+}
+
+*:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .screen-control,
+  .task-control,
+  .terminal-legend,
+  #task-details {
+    grid-column: 1;
+  }
+
+  .count-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .count-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
