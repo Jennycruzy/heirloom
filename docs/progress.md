@@ -172,8 +172,12 @@ recoverable at tag `stage3-first-pass`.
 - Catalogue parity suite remained 14/14 passed.
 - Python compilation, JavaScript syntax checks, and whitespace checks passed.
 
-**Still required before completion:** human browser confirmation of the
-repaired workflows, then one tightly scoped final Bob review.
+**Human browser confirmation:** passed for customer retrieve-before-edit,
+motor-policy retrieve-before-edit with both identifiers, and application-
+assigned customer numbers. The three screenshots are stored in
+`browser_evidence/` and linked from the after-fix report.
+
+**Still required before completion:** one tightly scoped final Bob review.
 
 **Artefacts:**
 - Before evidence: [`docs/reports/stage6-before-fix.md`](reports/stage6-before-fix.md)

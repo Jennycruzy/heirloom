@@ -56,8 +56,23 @@ task set, field set, input types, or verified maximum lengths.
 Python compilation, JavaScript syntax checks, and `git diff --check` all
 completed successfully.
 
+## Human browser confirmation
+
+All three repaired browser behaviors were confirmed by a person:
+
+- Customer Update loaded `CUST000001` before enabling editable fields.
+- Motor Update loaded `POL001` only with customer `CUST000001`, then enabled
+  editable fields while keeping the policy number locked.
+- Customer Add kept the customer-number field locked and returned the
+  application-assigned number `0000000001`.
+
+Evidence:
+
+- [`heirloom_stage6_customer_update_load.jpeg`](../../browser_evidence/heirloom_stage6_customer_update_load.jpeg)
+- [`heirloom_stage6_motor_update_load.jpeg`](../../browser_evidence/heirloom_stage6_motor_update_load.jpeg)
+- [`heirloom_stage6_generated_customer_number.jpeg`](../../browser_evidence/heirloom_stage6_generated_customer_number.jpeg)
+
 ## Remaining gate
 
-The automated repair is complete. Stage 6 is not marked complete until the
-repaired browser workflows are checked by a person and the final focused Bob
-review is recorded.
+The automated repair and human browser confirmation are complete. Stage 6 is
+not marked complete until the final focused Bob review is recorded.
