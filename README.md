@@ -60,6 +60,8 @@ any fix is attempted.
 
 Start with:
 
+- [Live judge demo](https://heirloom.54-154-121-30.sslip.io/)
+- [Live reconstructed legacy screens](https://heirloom.54-154-121-30.sslip.io/dashboard/)
 - [Project progress and evidence](docs/progress.md)
 - [One-page guide for judges](docs/judge-guide.md)
 - [Verified legacy catalogue](catalogue/genapp.json)
@@ -80,6 +82,9 @@ python3 modern-app/server.py --port 8080
 
 Open <http://127.0.0.1:8080/>. The invented inquiry identifiers are
 `CUST000001` and `POL001`.
+
+The public judge deployment is available at
+<https://heirloom.54-154-121-30.sslip.io/>.
 
 To view the source-reconstructed screen dashboard in a second terminal:
 
@@ -131,10 +136,10 @@ No model result is treated as proof by itself.
 ## Current status
 
 Source extraction, screen reconstruction, first implementation, deterministic
-comparison, evidence-driven repairs, human browser checks, and Bob's final
-independent review are complete. Deployment and submission packaging are in
-progress; [docs/progress.md](docs/progress.md) is the authoritative status
-record.
+comparison, evidence-driven repairs, human browser checks, Bob's final
+independent review, and the HTTPS judge deployment are complete. Submission
+packaging is in progress; [docs/progress.md](docs/progress.md) is the
+authoritative status record.
 
 ## Security and provenance
 

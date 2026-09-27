@@ -8,6 +8,11 @@ workflow parity.
 
 ## The demonstration
 
+Live entry point: <https://heirloom.54-154-121-30.sslip.io/>
+
+Live reconstructed screens:
+<https://heirloom.54-154-121-30.sslip.io/dashboard/>
+
 1. The `dashboard/` reconstructs the old CICS maps directly from the committed
    catalogue. Each screen is an exact 24-row by 80-column character grid.
 2. The `modern-app/` implements seven confirmed customer and motor-policy
@@ -40,6 +45,14 @@ confirmed in a browser, and Bob independently returned `READY` after checking
 the cited legacy and modern lines. The exact legacy identifier sequence and
 motor-delete not-found behavior remain explicitly uncertain and are not
 claimed as matches.
+
+## Quantified impact
+
+Heirloom exposed six business-workflow differences in a modernization of only
+seven tasks—even though the first implementation already passed ten
+application checks and all fourteen structural parity checks. That is the
+project's measurable value: it found consequential workflow drift that normal
+implementation and schema tests did not detect.
 
 ## What to inspect
 

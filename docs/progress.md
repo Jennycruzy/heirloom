@@ -193,7 +193,21 @@ legacy identifier sequence and the ambiguous motor-delete not-found behavior.
 
 ## Stage 7 — Present the evidence and deploy the judge dashboard
 
-Not started.
+**Completed: 2026-09-27**
+
+The repaired application and source-reconstruction dashboard are deployed on
+an isolated VPS service behind Nginx and HTTPS:
+
+- Judge entry point: <https://heirloom.54-154-121-30.sslip.io/>
+- Reconstructed screens: <https://heirloom.54-154-121-30.sslip.io/dashboard/>
+
+The deployment uses invented seed records only. Direct external checks returned
+HTTP 200 for the home page, dashboard, and a composite-key motor-policy API
+request. The TLS certificate is configured for automatic renewal. Existing VPS
+applications were not stopped or replaced.
+
+**Artefact:**
+- Deployment record: [`docs/reports/stage7-deployment.md`](reports/stage7-deployment.md)
 
 ---
 
