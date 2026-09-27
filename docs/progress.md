@@ -213,7 +213,19 @@ applications were not stopped or replaced.
 
 ## Stage 8 — Automate checks and publish measured results
 
-Not started.
+**In progress: first measurement recorded on 2026-09-27.**
+
+An informal controlled retry measured an SSP1 task-evidence lookup at 50
+seconds manually and 30 seconds with Heirloom, a 20-second (40%) reduction.
+The initial attempt took two minutes with both methods, and the report preserves
+that result and the familiarity limitation rather than presenting a universal
+productivity claim.
+
+**Artefact:**
+- Measurement and limitations: [`docs/reports/stage8-measurements.md`](reports/stage8-measurements.md)
+
+Repository automation remains optional until the time-critical submission
+assets are complete.
 
 ---
 

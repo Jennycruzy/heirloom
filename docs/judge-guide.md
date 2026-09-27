@@ -54,6 +54,13 @@ application checks and all fourteen structural parity checks. That is the
 project's measurable value: it found consequential workflow drift that normal
 implementation and schema tests did not detect.
 
+In one controlled informal evidence lookup, manual source review took 50
+seconds and the Heirloom dashboard took 30 seconds, a 20-second (40%)
+reduction. The initial attempt took two minutes by both methods, so the project
+does not generalize this small observation into a universal productivity
+claim. The full method and limitations are recorded in
+[`docs/reports/stage8-measurements.md`](reports/stage8-measurements.md).
+
 ## What to inspect
 
 - Catalogue result: [`catalogue/validation-result.json`](../catalogue/validation-result.json)
