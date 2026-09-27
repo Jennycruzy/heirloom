@@ -159,7 +159,10 @@ def main():
         return 2
 
     source_commit = git("rev-parse", "HEAD")
-    working_tree_clean = git("status", "--porcelain") == ""
+    # The record itself is excluded: republishing it must not mark the tree dirty.
+    working_tree_clean = git(
+        "status", "--porcelain", "--", ".", f":!{OUTPUT.relative_to(ROOT)}"
+    ) == ""
     suites = run_all()
     passed = sum(item["passed"] for item in suites)
     total = sum(item["total"] for item in suites)
