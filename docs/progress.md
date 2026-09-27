@@ -61,7 +61,39 @@ locally and the corrected files were tested before this stage was marked complet
 
 ## Stage 3 — Modernize (first pass)
 
-Not started.
+**Completed: 2026-09-27**
+
+The Python 3.11 standard-library application modernizes only the seven
+source-confirmed SSC1 customer and SSP1 motor-policy tasks. It uses SQLite and
+browser-native HTML, CSS, and JavaScript. Seed records are explicitly invented
+hackathon test data and are not represented as mainframe records.
+
+**Verified:**
+- Customer inquire, add, and update are implemented; customer delete is
+  deliberately absent.
+- Motor-policy inquire, add, update, and delete are implemented.
+- `python3 -m unittest discover -s modern-app/tests -v` passed all 10 database,
+  validation, API, static-file, and HTTP lifecycle checks.
+- `node --check modern-app/static/app.js` passed.
+- Human browser checks confirmed customer inquiry, motor-policy inquiry, and
+  customer creation.
+- The untouched first pass is preserved by Git tag `stage3-first-pass` at
+  commit `d666438`.
+
+**Artefacts:**
+- Application guide: [`modern-app/README.md`](../modern-app/README.md)
+- Data layer: [`modern-app/database.py`](../modern-app/database.py)
+- HTTP server: [`modern-app/server.py`](../modern-app/server.py)
+- Automated tests: [`modern-app/tests/test_modern_app.py`](../modern-app/tests/test_modern_app.py)
+- Parity report: [`docs/reports/stage3-parity.md`](reports/stage3-parity.md)
+- First-run evidence: [`watsonx_sessions/heirloom_stage3_modern_app_first_run.jpeg`](../watsonx_sessions/heirloom_stage3_modern_app_first_run.jpeg)
+- Customer inquiry: [`watsonx_sessions/heirloom_stage3_customer_inquiry.jpeg`](../watsonx_sessions/heirloom_stage3_customer_inquiry.jpeg)
+- Motor-policy inquiry: [`watsonx_sessions/heirloom_stage3_motor_policy_inquiry.jpeg`](../watsonx_sessions/heirloom_stage3_motor_policy_inquiry.jpeg)
+- Customer creation: [`watsonx_sessions/heirloom_stage3_customer_add.jpeg`](../watsonx_sessions/heirloom_stage3_customer_add.jpeg)
+
+The assessment is source-grounded: the legacy application was not run, and the
+authoritative Stage 1 catalogue was not altered. No intentional or observed
+gap was introduced.
 
 ---
 
