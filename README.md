@@ -181,7 +181,8 @@ they are not claimed as retroactive evidence for earlier sessions.
 Source extraction, screen reconstruction, first implementation, deterministic
 comparison, evidence-driven repairs, human browser checks, Bob's final
 independent review, the HTTPS judge deployment, and automated verification
-with published results are complete. Submission packaging is in progress;
+with published results are complete. The LabLab project was submitted by the
+solo team Jenny Builds before submissions closed;
 [docs/progress.md](docs/progress.md) is the authoritative status record.
 
 ## Security and provenance

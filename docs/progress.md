@@ -246,4 +246,13 @@ that all 67 published source references resolve to real lines.
 
 ## Stage 9 — Assemble and verify the submission package
 
-Not started.
+**Completed: 2026-09-27**
+
+Jenny Builds completed the LabLab project submission before submissions
+closed. The submitted package points judges to the HTTPS application, the
+source-reconstruction dashboard, the public GitHub repository, Bob evidence,
+source-linked reports, measured results, and the preserved first-pass tag.
+
+The team is a solo team. Submission-ready Bob evidence is stored as ten PNG
+files using the `jenny_builds_taskNN_description.png` naming convention. Local
+form-writing drafts under `submission/` remain intentionally uncommitted.
