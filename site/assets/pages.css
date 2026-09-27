@@ -132,9 +132,11 @@ section { scroll-margin-top: 4rem; }
 .finding__task { color: var(--muted); font-size: 0.85rem; display: block; margin-top: 0.3rem; font-family: var(--sans); }
 .finding__toggle {
   width: 2rem; height: 2rem; display: grid; place-items: center;
-  border: 1px solid var(--rule); font: 400 1rem/1 var(--mono); transition: transform 160ms ease;
+  border: 1px solid var(--rule); font: 400 1rem/1 var(--mono);
 }
-.finding__summary[aria-expanded="true"] .finding__toggle { transform: rotate(45deg); background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.finding__toggle::before { content: "+"; transition: transform 160ms ease; }
+.finding__summary[aria-expanded="true"] .finding__toggle { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.finding__summary[aria-expanded="true"] .finding__toggle::before { transform: rotate(45deg); }
 
 .finding__body {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0;

@@ -12,7 +12,7 @@ function findingItem(finding, tag, open) {
       el("span", { class: "finding__task", text: `${finding.transactionId} · ${finding.task}` }),
     ]),
     el("span", { class: "chip chip--fixed" }, [el("span", { class: "dot", "aria-hidden": "true" }), "Repaired"]),
-    el("span", { class: "finding__toggle", "aria-hidden": "true", text: "+" }),
+    el("span", { class: "finding__toggle", "aria-hidden": "true" }),
   ]);
 
   const column = (kind, heading, text, citations) => el("div", { class: `evidence-col evidence-col--${kind}` }, [
