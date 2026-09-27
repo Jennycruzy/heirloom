@@ -1,68 +1,139 @@
-# IBM Hackathon GitHub Project Template
+# Heirloom
 
-This GitHub project template is for IBM Hackathon projects. It includes pre-configured security files to help prevent accidental credential commits and potential account suspension during the hackathon.
+> The tests pass. Can the clerk still do their job?
 
-## 🚀 Quick Start
+Heirloom is an evidence-driven modernization checker for IBM CICS GenApp. It
+reconstructs legacy green screens from source, builds a deliberately small
+modern replacement, and then checks whether the replacement preserves the
+tasks and workflow meaning—not merely whether its code passes tests.
 
-1. **Use this template to create your project:**
-   - Click "Use this template" button above and select "Create a new repository"
-   - Name your repository
-   - Click "Create repository"
+## Why it matters
 
-2. **Clone your new repository:**
+A modernization can be technically healthy and still change the business
+process. A field can disappear, an identifier can become clerk-entered instead
+of system-generated, or an update can skip the legacy retrieve-before-edit
+sequence. Conventional unit tests often miss those changes.
 
-   ```bash
-   git clone https://github.com/HACKATHON-ORG/your-repo-name.git
-   cd your-repo-name
-   ```
+Heirloom makes the comparison reviewable:
 
-3. **Set up environment variables:**
+1. read the pinned GenApp BMS and COBOL source;
+2. record screens, fields, actions, rules, and uncertainty in a catalogue;
+3. reconstruct the 24×80 screens from that catalogue;
+4. implement a scoped modern application;
+5. compare exact facts with deterministic checks;
+6. use model judgement only for workflow meaning that cannot be reduced to a
+   field or length comparison;
+7. require source citations and a failing-before/passing-after test for every
+   repair.
 
-   ```bash
-   # Copy the example file
-   cp .env.example .env
+The legacy application was not run. All legacy claims come from the pinned
+source. Modern test records are invented and clearly labelled.
 
-   # Edit .env with your actual credentials
-   # Use your preferred editor (nano, vim, code, etc.)
-   nano .env
-   ```
+## What is implemented
 
-4. **Verify .gitignore is working:**
+The modern application covers seven source-confirmed tasks:
 
-   ```bash
-   # This should NOT show .env file
-   git status
+- Customer: inquire, add, and update.
+- Motor policy: inquire, add, delete, and update.
 
-   # This should confirm .env is ignored
-   git check-ignore -v .env
-   ```
+Customer deletion is intentionally absent because the verified SSC1 workflow
+does not expose it. Endowment, house, commercial, and claim workflows are not
+part of the modernization scope.
 
-5. **Start developing!**
+## Evidence at a glance
 
-## 🔒 Security Features
+| Evidence | Measured result |
+| --- | --- |
+| Legacy catalogue validation | 20/20 checks passed |
+| Screen reconstruction | 6 screens, each exactly 24×80 |
+| Catalogue actions | 20 visible actions: 18 program-confirmed, 2 explicitly uncertain |
+| First modern application | 10 database/API/HTTP tests passed |
+| Exact catalogue-to-modern comparison | 14/14 checks passed |
+| Workflow-meaning review | 5 matches and 6 source-proven gaps identified before repair |
 
-This template includes:
+The six gaps are valuable findings, not planted defects. They concern generated
+identifiers, retrieve-before-edit updates, and the customer-plus-policy key used
+by motor-policy operations. The untouched first implementation is preserved at
+Git tag `stage3-first-pass`; the evidence audit explains every finding before
+any fix is attempted.
 
-- **`.gitignore`** - Prevents committing credentials and live session files
-- **`.bobignore`** - Prevents AI assistants from logging credentials
-- **`.env.example`** - Template for your environment variables
+Start with:
 
-## 📋 Before Every Commit
+- [Project progress and evidence](docs/progress.md)
+- [One-page guide for judges](docs/judge-guide.md)
+- [Verified legacy catalogue](catalogue/genapp.json)
+- [Deterministic parity result](parity/result.json)
+- [Workflow evidence audit](docs/reports/stage5-evidence-audit.md)
+- [Bob review evidence](bob_sessions/heirloom_stage5_bob_final_result.jpeg)
 
-Always run this checklist:
+## Run locally
 
-- [ ] Reviewed `git diff` for sensitive data
-- [ ] No hardcoded API keys or passwords
-- [ ] `.env` file is NOT in staged changes
-- [ ] No files with "credential" or "secret" in name
-- [ ] Used environment variables for all credentials
+Requirements: Python 3.11 and a modern browser. The application itself has no
+external Python or JavaScript dependency.
 
-## 🆘 Need Help?
+```bash
+python3 modern-app/seed.py
+python3 modern-app/server.py --port 8080
+```
 
-- Read [SECURITY.md](SECURITY.MD) for detailed guidelines
-- Contact hackathon support through mentor channel
-- Ask in the hackathon Slack workspace
+Open <http://127.0.0.1:8080/>. The invented inquiry identifiers are
+`CUST000001` and `POL001`.
 
----
+To view the source-reconstructed screen dashboard in a second terminal:
 
-**Remember:** Security is everyone's responsibility. When in doubt, ask for help!
+```bash
+python3 -m http.server 8000
+```
+
+Open <http://127.0.0.1:8000/dashboard/>.
+
+## Verify
+
+```bash
+python3 parity/check.py
+python3 -m unittest discover -s modern-app/tests -v
+node dashboard/test.mjs
+```
+
+The Stage 1 catalogue validator additionally uses the pinned validation setup
+documented under `catalogue/scripts/`; its committed result is
+`catalogue/validation-result.json`.
+
+## How AI was used
+
+- IBM Bob performed source-oriented planning and semantic review with separate
+  customer and motor-policy reviewers.
+- watsonx.ai Granite supplied documented fallback drafts while Bob usage was
+  reserved for evidence-heavy review.
+- Deterministic scripts, source citations, browser checks, and human review
+  verify generated work. Original model output and correction audits are both
+  retained when a review is incomplete.
+
+No model result is treated as proof by itself.
+
+## Repository map
+
+| Path | Purpose |
+| --- | --- |
+| `legacy/cics-genapp/` | Read-only IBM GenApp submodule pinned to a known commit |
+| `catalogue/` | Source-derived screens, tasks, rules, schema, and validation result |
+| `dashboard/` | Exact 24×80 legacy-screen reconstruction |
+| `modern-app/` | Scoped standard-library modernization and tests |
+| `parity/` | Deterministic catalogue-to-modern comparisons |
+| `docs/reports/` | Human-readable findings and evidence audits |
+| `bob_sessions/` | IBM Bob evidence required for the project record |
+| `watsonx_sessions/` | watsonx generation and browser evidence |
+
+## Current status
+
+Source extraction, screen reconstruction, first implementation, deterministic
+comparison, and workflow review are complete. Evidence-driven repairs, final
+independent review, deployment, CI, measurements, and submission packaging are
+still in progress; [docs/progress.md](docs/progress.md) is the authoritative
+status record.
+
+## Security and provenance
+
+See [SECURITY.MD](SECURITY.MD) for credential rules and
+[docs/data-sources.md](docs/data-sources.md) for the pinned GenApp source and
+EPL-2.0 provenance. IBM does not endorse Heirloom.

@@ -4,7 +4,7 @@ No stage may be marked passed until a deterministic check has actually been run 
 
 ---
 
-## Stage 1 — Read the old system
+## Stage 1 — Build a source-derived legacy catalogue
 
 **Completed: 2026-09-26**
 
@@ -29,7 +29,7 @@ No unresolved catalogue mismatch found in the SSMAPC1 manual check.
 
 ---
 
-## Stage 2 — Show the old screens
+## Stage 2 — Reconstruct the legacy screens exactly
 
 **Completed: 2026-09-27**
 
@@ -59,7 +59,7 @@ locally and the corrected files were tested before this stage was marked complet
 
 ---
 
-## Stage 3 — Modernize (first pass)
+## Stage 3 — Build and preserve the first modern implementation
 
 **Completed: 2026-09-27**
 
@@ -97,7 +97,7 @@ gap was introduced.
 
 ---
 
-## Stage 4 — The certain layer
+## Stage 4 — Compare exact facts with machine checks
 
 **Completed: 2026-09-27**
 
@@ -128,7 +128,7 @@ installed in the current standard-library application environment.
 
 ---
 
-## Stage 5 — The judgement layer and parallel subagents
+## Stage 5 — Review workflow meaning with independent AI reviewers
 
 **Completed: 2026-09-27**
 
@@ -156,24 +156,24 @@ The original Bob report is preserved unchanged alongside the audit.
 
 ---
 
-## Stage 6 — The fix loop and the pull request
+## Stage 6 — Repair only proven gaps and obtain final review
 
 Not started.
 
 ---
 
-## Stage 7 — The dashboard and hosting
+## Stage 7 — Present the evidence and deploy the judge dashboard
 
 Not started.
 
 ---
 
-## Stage 8 — CI and measurement
+## Stage 8 — Automate checks and publish measured results
 
 Not started.
 
 ---
 
-## Stage 9 — Submission
+## Stage 9 — Assemble and verify the submission package
 
 Not started.
