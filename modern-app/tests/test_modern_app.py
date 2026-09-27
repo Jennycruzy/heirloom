@@ -5,6 +5,7 @@ import tempfile
 import threading
 import unittest
 from pathlib import Path
+from urllib.parse import urlencode
 
 
 APP_DIR = Path(__file__).resolve().parents[1]
@@ -26,6 +27,26 @@ class TemporaryDatabaseTest(unittest.TestCase):
 
 
 class DatabaseTests(TemporaryDatabaseTest):
+    def test_add_customer_assigns_identifier(self):
+        customer = {field: "" for field in database.CUSTOMER_FIELDS}
+        customer.pop("customer_number")
+        customer["first_name"] = "Generated"
+
+        added = database.add_customer(customer, self.db_path)
+
+        self.assertEqual(added["customer_number"], "0000000001")
+        self.assertEqual(added["first_name"], "Generated")
+
+    def test_add_motor_policy_assigns_identifier(self):
+        policy = {field: "" for field in database.MOTOR_POLICY_FIELDS}
+        policy.pop("policy_number")
+        policy.update(customer_number="CUST000001", car_make="Generated")
+
+        added = database.add_motor_policy(policy, self.db_path)
+
+        self.assertEqual(added["policy_number"], "0000000001")
+        self.assertEqual(added["customer_number"], "CUST000001")
+
     def test_seeded_customer_can_be_inquired_and_partially_updated(self):
         customer = database.inquire_customer("CUST000001", self.db_path)
         self.assertEqual(customer["first_name"], "Alice")
@@ -222,6 +243,43 @@ class HttpTests(TemporaryDatabaseTest):
         self.assertEqual(
             json.loads(content), {"error": "Referenced customer does not exist"}
         )
+
+    def test_motor_inquiry_requires_matching_customer_and_policy(self):
+        query = urlencode({"customer_number": "CUST000002"})
+        response, content = self.request(
+            "GET", f"/api/motor-policies/POL001?{query}"
+        )
+        self.assertEqual(response.status, 404)
+        self.assertEqual(json.loads(content), {"error": "Motor policy not found"})
+
+    def test_motor_delete_does_not_remove_another_customers_policy(self):
+        query = urlencode({"customer_number": "CUST000002"})
+        response, content = self.request(
+            "DELETE", f"/api/motor-policies/POL001?{query}"
+        )
+        self.assertEqual(response.status, 404)
+        self.assertEqual(json.loads(content), {"error": "Motor policy not found"})
+        self.assertIsNotNone(database.inquire_motor_policy("POL001", self.db_path))
+
+    def test_motor_update_uses_customer_and_policy_as_the_key(self):
+        policy = database.inquire_motor_policy("POL001", self.db_path)
+        update = {
+            field: value
+            for field, value in policy.items()
+            if field != "policy_number"
+        }
+        update["customer_number"] = "CUST000002"
+        update["car_colour"] = "Blue"
+
+        response, content = self.request(
+            "PUT", "/api/motor-policies/POL001", update
+        )
+
+        self.assertEqual(response.status, 404)
+        self.assertEqual(json.loads(content), {"error": "Motor policy not found"})
+        unchanged = database.inquire_motor_policy("POL001", self.db_path)
+        self.assertEqual(unchanged["customer_number"], "CUST000001")
+        self.assertEqual(unchanged["car_colour"], "Silver")
 
 
 if __name__ == "__main__":
