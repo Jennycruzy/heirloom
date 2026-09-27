@@ -24,6 +24,11 @@ server {
     location /dashboard/ {
         alias /opt/heirloom/dashboard/;
         index index.html;
+        types {
+            text/html html;
+            text/css css;
+            application/javascript js mjs;
+        }
     }
 
     location /catalogue/ {

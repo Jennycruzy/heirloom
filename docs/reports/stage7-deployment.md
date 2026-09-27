@@ -26,6 +26,9 @@ No environment file or developer database was copied to the server.
 - HTTPS dashboard from the VPS: passed.
 - External HTTPS home page from the development computer: HTTP 200.
 - External HTTPS dashboard content check: passed.
+- Headless Chrome dashboard render: passed after configuring Nginx to serve
+  `.mjs` modules as `application/javascript`; the rendered page displayed the
+  verified catalogue status and six-screen count instead of placeholders.
 - External composite-key motor-policy API check for invented identifiers
   `CUST000001` and `POL001`: passed.
 
