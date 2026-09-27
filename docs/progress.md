@@ -130,7 +130,28 @@ installed in the current standard-library application environment.
 
 ## Stage 5 — The judgement layer and parallel subagents
 
-Not started.
+**Completed: 2026-09-27**
+
+Bob launched separate SSC1 and SSP1 semantic reviewers. The SSC1 reviewer
+completed; the SSP1 reviewer stalled and was stopped, so its unresolved items
+were completed by a direct evidence audit rather than represented as finished.
+The original Bob report is preserved unchanged alongside the audit.
+
+**Outcome:**
+- Five semantic matches confirmed.
+- Six source-proven gaps identified: generated customer and policy numbers,
+  inquire-first update flows, and composite customer-plus-policy identification
+  for motor inquiry, update, and delete.
+- Date, numeric, additional required-field, and delete-not-found semantics were
+  not invented where the source did not establish them.
+- No application code was changed during Stage 5.
+
+**Artefacts:**
+- Bob task: [`docs/prompts/stage5-bob-semantic-review.md`](prompts/stage5-bob-semantic-review.md)
+- Bob recovery instruction: [`docs/prompts/stage5-bob-finish-now.md`](prompts/stage5-bob-finish-now.md)
+- Original Bob report: [`docs/reports/stage5-bob-semantic-review.md`](reports/stage5-bob-semantic-review.md)
+- Evidence audit: [`docs/reports/stage5-evidence-audit.md`](reports/stage5-evidence-audit.md)
+- Bob session evidence: [`bob_sessions/heirloom_stage5_bob_parallel_review.jpeg`](../bob_sessions/heirloom_stage5_bob_parallel_review.jpeg)
 
 ---
 
