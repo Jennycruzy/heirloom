@@ -118,3 +118,7 @@ build/
 # DO NOT REMOVE ABOVE PATTERNS
 # Add project-specific patterns below
 # ============================================
+# Local runtime data
+modern-app/db/*.sqlite3
+modern-app/__pycache__/
+modern-app/tests/__pycache__/

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heirloom Modern</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header>
+    <p class="eyebrow">First-pass modernization</p>
+    <h1>Heirloom Modern</h1>
+    <p class="lede">Customer and motor policy workspace</p>
+    <p class="notice">Customer and motor policy workflows only.</p>
+    <p class="provenance">Test records on this page are invented for the hackathon; no mainframe was run.</p>
+  </header>
+
+  <main>
+    <div id="app-status" role="status" aria-live="polite"></div>
+
+    <section id="customer-workspace" class="workspace-card">
+      <div class="section-heading">
+        <p class="transaction">SSC1</p>
+        <h2>Customer</h2>
+      </div>
+      <form id="customer-form">
+        <div class="operation-row">
+          <label for="customer-operation">Task</label>
+          <select id="customer-operation" name="customer-operation">
+            <option value="inquire">Inquire customer</option>
+            <option value="add">Add customer</option>
+            <option value="update">Update customer</option>
+          </select>
+        </div>
+        <fieldset>
+          <legend>Customer details</legend>
+          <div class="form-grid">
+            <div class="form-group"><label for="customer-customer_number">Customer number</label><input type="text" id="customer-customer_number" name="customer_number" maxlength="10"></div>
+            <div class="form-group"><label for="customer-first_name">First name</label><input type="text" id="customer-first_name" name="first_name" maxlength="10"></div>
+            <div class="form-group"><label for="customer-last_name">Last name</label><input type="text" id="customer-last_name" name="last_name" maxlength="20"></div>
+            <div class="form-group"><label for="customer-date_of_birth">Date of birth</label><input type="text" id="customer-date_of_birth" name="date_of_birth" maxlength="10"></div>
+            <div class="form-group"><label for="customer-house_name">House name</label><input type="text" id="customer-house_name" name="house_name" maxlength="20"></div>
+            <div class="form-group"><label for="customer-house_number">House number</label><input type="text" id="customer-house_number" name="house_number" maxlength="4"></div>
+            <div class="form-group"><label for="customer-postcode">Postcode</label><input type="text" id="customer-postcode" name="postcode" maxlength="8"></div>
+            <div class="form-group"><label for="customer-home_phone">Home phone</label><input type="text" id="customer-home_phone" name="home_phone" maxlength="20"></div>
+            <div class="form-group"><label for="customer-mobile_phone">Mobile phone</label><input type="text" id="customer-mobile_phone" name="mobile_phone" maxlength="20"></div>
+            <div class="form-group"><label for="customer-email">Email</label><input type="text" id="customer-email" name="email" maxlength="27"></div>
+          </div>
+          <p class="date-hint">Date format shown by the legacy screen: yyyy-mm-dd; enforcement could not be determined.</p>
+        </fieldset>
+        <div class="actions"><button id="customer-submit" type="submit">Run customer task</button><button type="reset" class="secondary">Clear</button></div>
+      </form>
+      <section id="customer-result" class="result-panel"><h3>Customer result</h3><dl></dl></section>
+    </section>
+
+    <section id="motor-workspace" class="workspace-card">
+      <div class="section-heading">
+        <p class="transaction">SSP1</p>
+        <h2>Motor policy</h2>
+      </div>
+      <form id="motor-form">
+        <div class="operation-row">
+          <label for="motor-operation">Task</label>
+          <select id="motor-operation" name="motor-operation">
+            <option value="inquire">Inquire motor policy</option>
+            <option value="add">Add motor policy</option>
+            <option value="delete">Delete motor policy</option>
+            <option value="update">Update motor policy</option>
+          </select>
+        </div>
+        <fieldset>
+          <legend>Motor policy details</legend>
+          <div class="form-grid">
+            <div class="form-group"><label for="motor-policy_number">Policy number</label><input type="text" id="motor-policy_number" name="policy_number" maxlength="10"></div>
+            <div class="form-group"><label for="motor-customer_number">Customer number</label><input type="text" id="motor-customer_number" name="customer_number" maxlength="10"></div>
+            <div class="form-group"><label for="motor-issue_date">Issue date</label><input type="text" id="motor-issue_date" name="issue_date" maxlength="10"></div>
+            <div class="form-group"><label for="motor-expiry_date">Expiry date</label><input type="text" id="motor-expiry_date" name="expiry_date" maxlength="10"></div>
+            <div class="form-group"><label for="motor-car_make">Car make</label><input type="text" id="motor-car_make" name="car_make" maxlength="20"></div>
+            <div class="form-group"><label for="motor-car_model">Car model</label><input type="text" id="motor-car_model" name="car_model" maxlength="20"></div>
+            <div class="form-group"><label for="motor-car_value">Car value</label><input type="text" id="motor-car_value" name="car_value" maxlength="6"></div>
+            <div class="form-group"><label for="motor-registration">Registration</label><input type="text" id="motor-registration" name="registration" maxlength="7"></div>
+            <div class="form-group"><label for="motor-car_colour">Car colour</label><input type="text" id="motor-car_colour" name="car_colour" maxlength="8"></div>
+            <div class="form-group"><label for="motor-engine_cc">CC</label><input type="text" id="motor-engine_cc" name="engine_cc" maxlength="8"></div>
+            <div class="form-group"><label for="motor-manufacture_date">Manufacture date</label><input type="text" id="motor-manufacture_date" name="manufacture_date" maxlength="10"></div>
+            <div class="form-group"><label for="motor-accident_count">Number of accidents</label><input type="text" id="motor-accident_count" name="accident_count" maxlength="6"></div>
+            <div class="form-group"><label for="motor-policy_premium">Policy premium</label><input type="text" id="motor-policy_premium" name="policy_premium" maxlength="6"></div>
+          </div>
+          <p class="date-hint">Date format shown by the legacy screen: yyyy-mm-dd; enforcement could not be determined.</p>
+        </fieldset>
+        <div class="actions"><button id="motor-submit" type="submit">Run motor policy task</button><button type="reset" class="secondary">Clear</button></div>
+      </form>
+      <section id="motor-result" class="result-panel"><h3>Motor policy result</h3><dl></dl></section>
+    </section>
+  </main>
+
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>
