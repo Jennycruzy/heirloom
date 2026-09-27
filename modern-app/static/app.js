@@ -1,3 +1,10 @@
+import {
+  createWorkflow,
+  enabledFields,
+  markLoaded,
+  requestIntent,
+} from "/static/workflows.mjs";
+
 const customerFields = [
   "customer_number", "first_name", "last_name", "date_of_birth", "house_name",
   "house_number", "postcode", "home_phone", "mobile_phone", "email",
@@ -27,6 +34,9 @@ const motorResult = requireElement("#motor-result dl");
 for (const field of customerFields) requireElement(`#customer-${field}`);
 for (const field of motorFields) requireElement(`#motor-${field}`);
 
+let customerWorkflow = createWorkflow("customer", customerOperation.value);
+let motorWorkflow = createWorkflow("motor", motorOperation.value);
+
 function setStatus(message, kind = "") {
   status.textContent = message;
   status.classList.remove("status--success", "status--error");
@@ -50,13 +60,9 @@ async function request(method, url, payload) {
   return body.data;
 }
 
-function values(form, fields, excluded = []) {
+function values(form, fields) {
   const formData = new FormData(form);
-  return Object.fromEntries(
-    fields
-      .filter((field) => !excluded.includes(field))
-      .map((field) => [field, String(formData.get(field) ?? "")]),
-  );
+  return Object.fromEntries(fields.map((field) => [field, String(formData.get(field) ?? "")]));
 }
 
 function populate(prefix, record) {
@@ -78,46 +84,82 @@ function renderResult(container, record) {
   container.replaceChildren(...nodes);
 }
 
-function updateFieldActivity(prefix, fields, operation, identifier) {
-  const identifierOnly = operation === "inquire" || operation === "delete";
+function applyWorkflow(prefix, fields, workflow, submit) {
+  const active = new Set(enabledFields(workflow, fields));
   for (const field of fields) {
     const input = requireElement(`#${prefix}-${field}`);
-    const inactive = identifierOnly && field !== identifier;
+    const inactive = !active.has(field);
     input.disabled = inactive;
     input.closest(".form-group").classList.toggle("field--inactive", inactive);
   }
+  const intent = requestIntent(workflow);
+  if (intent === "load-update") submit.textContent = "Load current record";
+  else if (workflow.entity === "customer") submit.textContent = "Run customer task";
+  else submit.textContent = "Run motor policy task";
+}
+
+function requireValue(selector, label) {
+  const value = requireElement(selector).value.trim();
+  if (!value) throw new Error(`${label} is required`);
+  return value;
+}
+
+function motorUrl(policyNumber, customerNumber) {
+  const query = new URLSearchParams({ customer_number: customerNumber });
+  return `/api/motor-policies/${encodeURIComponent(policyNumber)}?${query}`;
 }
 
 customerOperation.addEventListener("change", () => {
-  updateFieldActivity("customer", customerFields, customerOperation.value, "customer_number");
+  customerWorkflow = createWorkflow("customer", customerOperation.value);
+  applyWorkflow("customer", customerFields, customerWorkflow, customerSubmit);
 });
+
 motorOperation.addEventListener("change", () => {
-  updateFieldActivity("motor", motorFields, motorOperation.value, "policy_number");
+  motorWorkflow = createWorkflow("motor", motorOperation.value);
+  applyWorkflow("motor", motorFields, motorWorkflow, motorSubmit);
 });
 
 customerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const operation = customerOperation.value;
-  const identifier = requireElement("#customer-customer_number").value.trim();
+  const intent = requestIntent(customerWorkflow);
   customerSubmit.disabled = true;
   try {
-    if (!identifier) throw new Error("Customer number is required");
     let record;
-    if (operation === "inquire") {
-      record = await request("GET", `/api/customers/${encodeURIComponent(identifier)}`);
-    } else if (operation === "add") {
-      record = await request("POST", "/api/customers", values(customerForm, customerFields));
-    } else {
+    if (intent === "add") {
       record = await request(
-        "PUT",
-        `/api/customers/${encodeURIComponent(identifier)}`,
-        values(customerForm, customerFields, ["customer_number"]),
+        "POST",
+        "/api/customers",
+        values(customerForm, customerFields.filter((field) => field !== "customer_number")),
       );
+      populate("customer", record);
+      renderResult(customerResult, record);
+      setStatus(`Customer ${record.customer_number} added.`, "success");
+      return;
     }
+
+    const identifier = requireValue("#customer-customer_number", "Customer number");
+    if (intent === "inquire" || intent === "load-update") {
+      record = await request("GET", `/api/customers/${encodeURIComponent(identifier)}`);
+      populate("customer", record);
+      renderResult(customerResult, record);
+      if (intent === "load-update") {
+        customerWorkflow = markLoaded(customerWorkflow);
+        applyWorkflow("customer", customerFields, customerWorkflow, customerSubmit);
+        setStatus(`Customer ${identifier} loaded for update.`, "success");
+      } else {
+        setStatus(`Customer ${identifier} loaded.`, "success");
+      }
+      return;
+    }
+
+    record = await request(
+      "PUT",
+      `/api/customers/${encodeURIComponent(identifier)}`,
+      values(customerForm, customerFields.filter((field) => field !== "customer_number")),
+    );
     populate("customer", record);
     renderResult(customerResult, record);
-    const verb = operation === "add" ? "added" : operation === "update" ? "updated" : "loaded";
-    setStatus(`Customer ${identifier} ${verb}.`, "success");
+    setStatus(`Customer ${identifier} updated.`, "success");
   } catch (error) {
     setStatus(`Customer task failed: ${error.message}`, "error");
   } finally {
@@ -127,33 +169,57 @@ customerForm.addEventListener("submit", async (event) => {
 
 motorForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const operation = motorOperation.value;
-  const identifier = requireElement("#motor-policy_number").value.trim();
+  const intent = requestIntent(motorWorkflow);
   motorSubmit.disabled = true;
   try {
-    if (!identifier) throw new Error("Policy number is required");
     let record;
-    if (operation === "inquire") {
-      record = await request("GET", `/api/motor-policies/${encodeURIComponent(identifier)}`);
-    } else if (operation === "add") {
-      record = await request("POST", "/api/motor-policies", values(motorForm, motorFields));
-    } else if (operation === "update") {
+    if (intent === "add") {
+      requireValue("#motor-customer_number", "Customer number");
+      record = await request(
+        "POST",
+        "/api/motor-policies",
+        values(motorForm, motorFields.filter((field) => field !== "policy_number")),
+      );
+      populate("motor", record);
+      renderResult(motorResult, record);
+      setStatus(`Motor policy ${record.policy_number} added.`, "success");
+      return;
+    }
+
+    const policyNumber = requireValue("#motor-policy_number", "Policy number");
+    const customerNumber = requireValue("#motor-customer_number", "Customer number");
+    const url = motorUrl(policyNumber, customerNumber);
+
+    if (intent === "inquire" || intent === "load-update") {
+      record = await request("GET", url);
+      populate("motor", record);
+      renderResult(motorResult, record);
+      if (intent === "load-update") {
+        motorWorkflow = markLoaded(motorWorkflow);
+        applyWorkflow("motor", motorFields, motorWorkflow, motorSubmit);
+        setStatus(`Motor policy ${policyNumber} loaded for update.`, "success");
+      } else {
+        setStatus(`Motor policy ${policyNumber} loaded.`, "success");
+      }
+      return;
+    }
+
+    if (intent === "submit-update") {
       record = await request(
         "PUT",
-        `/api/motor-policies/${encodeURIComponent(identifier)}`,
-        values(motorForm, motorFields, ["policy_number"]),
+        `/api/motor-policies/${encodeURIComponent(policyNumber)}`,
+        values(motorForm, motorFields.filter((field) => field !== "policy_number")),
       );
-    } else {
-      record = await request("DELETE", `/api/motor-policies/${encodeURIComponent(identifier)}`);
-    }
-    renderResult(motorResult, record);
-    if (operation === "delete") {
-      for (const field of motorFields) requireElement(`#motor-${field}`).value = "";
-    } else {
       populate("motor", record);
+      renderResult(motorResult, record);
+      setStatus(`Motor policy ${policyNumber} updated.`, "success");
+      return;
     }
-    const verb = operation === "add" ? "added" : operation === "update" ? "updated" : operation === "delete" ? "deleted" : "loaded";
-    setStatus(`Motor policy ${identifier} ${verb}.`, "success");
+
+    record = await request("DELETE", url);
+    renderResult(motorResult, record);
+    for (const field of motorFields) requireElement(`#motor-${field}`).value = "";
+    setStatus(`Motor policy ${policyNumber} deleted.`, "success");
   } catch (error) {
     setStatus(`Motor policy task failed: ${error.message}`, "error");
   } finally {
@@ -161,18 +227,27 @@ motorForm.addEventListener("submit", async (event) => {
   }
 });
 
-function handleReset(form, result, operation, prefix, fields, identifier) {
+function handleReset(form, result, operation, prefix, fields, submit, setWorkflow) {
   form.addEventListener("reset", () => {
     setTimeout(() => {
       result.replaceChildren();
       setStatus("");
-      updateFieldActivity(prefix, fields, operation.value, identifier);
+      const workflow = createWorkflow(prefix, operation.value);
+      setWorkflow(workflow);
+      applyWorkflow(prefix, fields, workflow, submit);
     }, 0);
   });
 }
 
-handleReset(customerForm, customerResult, customerOperation, "customer", customerFields, "customer_number");
-handleReset(motorForm, motorResult, motorOperation, "motor", motorFields, "policy_number");
-updateFieldActivity("customer", customerFields, customerOperation.value, "customer_number");
-updateFieldActivity("motor", motorFields, motorOperation.value, "policy_number");
-setStatus("Ready. Use the invented identifiers CUST000001 or POL001 to inquire.", "success");
+handleReset(
+  customerForm, customerResult, customerOperation, "customer", customerFields,
+  customerSubmit, (workflow) => { customerWorkflow = workflow; },
+);
+handleReset(
+  motorForm, motorResult, motorOperation, "motor", motorFields,
+  motorSubmit, (workflow) => { motorWorkflow = workflow; },
+);
+
+applyWorkflow("customer", customerFields, customerWorkflow, customerSubmit);
+applyWorkflow("motor", motorFields, motorWorkflow, motorSubmit);
+setStatus("Ready. Use the invented identifiers CUST000001 and POL001 with customer CUST000001 to inquire.", "success");

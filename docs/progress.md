@@ -158,7 +158,26 @@ The original Bob report is preserved unchanged alongside the audit.
 
 ## Stage 6 — Repair only proven gaps and obtain final review
 
-Not started.
+**In progress: automated repairs verified on 2026-09-27.**
+
+The six source-proven Stage 5 workflow differences have been repaired on the
+dedicated `fix/source-proven-parity-gaps` branch. The first pass remains
+recoverable at tag `stage3-first-pass`.
+
+**Verified so far:**
+- Pre-fix evidence captured the expected five failing/erroring application
+  checks and the missing browser workflow state.
+- Post-fix application suite: 15/15 passed.
+- Browser workflow regression test passed.
+- Catalogue parity suite remained 14/14 passed.
+- Python compilation, JavaScript syntax checks, and whitespace checks passed.
+
+**Still required before completion:** human browser confirmation of the
+repaired workflows, then one tightly scoped final Bob review.
+
+**Artefacts:**
+- Before evidence: [`docs/reports/stage6-before-fix.md`](reports/stage6-before-fix.md)
+- After evidence: [`docs/reports/stage6-after-fix.md`](reports/stage6-after-fix.md)
 
 ---
 

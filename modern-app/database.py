@@ -156,7 +156,8 @@ def _insert(table, fields, data, db_path, entity):
         raise _integrity_error(error, entity) from None
 
 
-def add_customer(data, db_path=None):
+def _seed_customer(data, db_path=None):
+    """Insert one deterministic invented fixture with its documented ID."""
     clean = _validated_payload(
         data,
         CUSTOMER_FIELDS,
@@ -166,6 +167,81 @@ def add_customer(data, db_path=None):
     )
     _insert("customers", CUSTOMER_FIELDS, clean, db_path, "customer")
     return inquire_customer(clean["customer_number"], db_path)
+
+
+def _seed_motor_policy(data, db_path=None):
+    """Insert one deterministic invented fixture with its documented ID."""
+    clean = _validated_payload(
+        data,
+        MOTOR_POLICY_FIELDS,
+        require_all=True,
+        nonblank=("policy_number", "customer_number"),
+    )
+    _insert(
+        "motor_policies",
+        MOTOR_POLICY_FIELDS,
+        clean,
+        db_path,
+        "motor policy",
+    )
+    return inquire_motor_policy(
+        clean["policy_number"],
+        db_path,
+        customer_number=clean["customer_number"],
+    )
+
+
+def _next_identifier(connection, table, primary_key):
+    values = connection.execute(
+        f"SELECT {primary_key} FROM {table}"
+    ).fetchall()
+    numeric = [int(row[0]) for row in values if row[0].isdigit()]
+    next_value = max(numeric, default=0) + 1
+    if next_value > 9_999_999_999:
+        raise ValueError(f"No {primary_key} identifiers remain")
+    return f"{next_value:010d}"
+
+
+def _insert_with_generated_identifier(
+    table, fields, primary_key, data, db_path, entity
+):
+    names = list(fields)
+    try:
+        with connect(db_path) as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            identifier = _next_identifier(connection, table, primary_key)
+            record = {primary_key: identifier, **data}
+            placeholders = ", ".join("?" for _ in names)
+            connection.execute(
+                f"INSERT INTO {table} ({', '.join(names)}) VALUES ({placeholders})",
+                [record[name] for name in names],
+            )
+    except sqlite3.IntegrityError as error:
+        raise _integrity_error(error, entity) from None
+    return identifier
+
+
+def add_customer(data, db_path=None):
+    add_fields = OrderedDict(
+        (name, maximum)
+        for name, maximum in CUSTOMER_FIELDS.items()
+        if name != "customer_number"
+    )
+    clean = _validated_payload(
+        data,
+        add_fields,
+        require_all=True,
+        uppercase=("postcode",),
+    )
+    identifier = _insert_with_generated_identifier(
+        "customers",
+        CUSTOMER_FIELDS,
+        "customer_number",
+        clean,
+        db_path,
+        "customer",
+    )
+    return inquire_customer(identifier, db_path)
 
 
 def inquire_customer(customer_number, db_path=None):
@@ -207,26 +283,45 @@ def update_customer(customer_number, data, db_path=None):
 
 
 def add_motor_policy(data, db_path=None):
+    add_fields = OrderedDict(
+        (name, maximum)
+        for name, maximum in MOTOR_POLICY_FIELDS.items()
+        if name != "policy_number"
+    )
     clean = _validated_payload(
         data,
-        MOTOR_POLICY_FIELDS,
+        add_fields,
         require_all=True,
-        nonblank=("policy_number", "customer_number"),
+        nonblank=("customer_number",),
     )
-    _insert(
-        "motor_policies", MOTOR_POLICY_FIELDS, clean, db_path, "motor policy"
+    identifier = _insert_with_generated_identifier(
+        "motor_policies",
+        MOTOR_POLICY_FIELDS,
+        "policy_number",
+        clean,
+        db_path,
+        "motor policy",
     )
-    return inquire_motor_policy(clean["policy_number"], db_path)
+    return inquire_motor_policy(
+        identifier, db_path, customer_number=clean["customer_number"]
+    )
 
 
-def inquire_motor_policy(policy_number, db_path=None):
+def inquire_motor_policy(policy_number, db_path=None, customer_number=None):
     if not isinstance(policy_number, str) or not policy_number.strip():
         raise ValueError("policy_number must not be blank")
     with connect(db_path) as connection:
-        row = connection.execute(
-            "SELECT * FROM motor_policies WHERE policy_number = ?",
-            (policy_number,),
-        ).fetchone()
+        if customer_number is None:
+            row = connection.execute(
+                "SELECT * FROM motor_policies WHERE policy_number = ?",
+                (policy_number,),
+            ).fetchone()
+        else:
+            row = connection.execute(
+                """SELECT * FROM motor_policies
+                   WHERE policy_number = ? AND customer_number = ?""",
+                (policy_number, customer_number),
+            ).fetchone()
     return dict(row) if row is not None else None
 
 
@@ -237,24 +332,41 @@ def update_motor_policy(policy_number, data, db_path=None):
         forbidden=("policy_number",),
         nonblank=("customer_number",),
     )
-    _update(
-        "motor_policies",
-        "policy_number",
-        policy_number,
-        clean,
-        db_path,
-        "motor policy",
+    if "customer_number" not in clean:
+        raise ValueError("customer_number is required for motor policy update")
+    assignments = ", ".join(f"{field} = ?" for field in clean)
+    try:
+        with connect(db_path) as connection:
+            cursor = connection.execute(
+                f"""UPDATE motor_policies SET {assignments}
+                    WHERE policy_number = ? AND customer_number = ?""",
+                [*clean.values(), policy_number, clean["customer_number"]],
+            )
+            if cursor.rowcount == 0:
+                raise ValueError("Motor policy does not exist")
+    except sqlite3.IntegrityError as error:
+        raise _integrity_error(error, "motor policy") from None
+    return inquire_motor_policy(
+        policy_number, db_path, customer_number=clean["customer_number"]
     )
-    return inquire_motor_policy(policy_number, db_path)
 
 
-def delete_motor_policy(policy_number, db_path=None):
-    record = inquire_motor_policy(policy_number, db_path)
+def delete_motor_policy(policy_number, db_path=None, customer_number=None):
+    record = inquire_motor_policy(
+        policy_number, db_path, customer_number=customer_number
+    )
     if record is None:
         raise ValueError("Motor policy does not exist")
     with connect(db_path) as connection:
-        connection.execute(
-            "DELETE FROM motor_policies WHERE policy_number = ?",
-            (policy_number,),
-        )
+        if customer_number is None:
+            connection.execute(
+                "DELETE FROM motor_policies WHERE policy_number = ?",
+                (policy_number,),
+            )
+        else:
+            connection.execute(
+                """DELETE FROM motor_policies
+                   WHERE policy_number = ? AND customer_number = ?""",
+                (policy_number, customer_number),
+            )
     return record

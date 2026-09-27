@@ -5,7 +5,7 @@ import json
 import mimetypes
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import unquote, urlsplit
+from urllib.parse import parse_qs, unquote, urlsplit
 
 from database import (
     add_customer,
@@ -48,7 +48,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         self._dispatch("DELETE")
 
     def _dispatch(self, method):
-        path = urlsplit(self.path).path
+        parsed = urlsplit(self.path)
+        path = parsed.path
         if path == "/" and method == "GET":
             self._serve_file(STATIC_DIR / "index.html")
             return
@@ -56,13 +57,13 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._serve_static(path.removeprefix("/static/"))
             return
         if path.startswith("/api/"):
-            self._dispatch_api(method, path)
+            self._dispatch_api(method, path, parsed.query)
             return
         self.send_error(404, "Not found")
 
-    def _dispatch_api(self, method, path):
+    def _dispatch_api(self, method, path, query):
         try:
-            result, status = self._run_api(method, path)
+            result, status = self._run_api(method, path, query)
             self._send_json(status, {"data": result})
         except ApiNotFound as error:
             self._send_json(404, {"error": str(error)})
@@ -72,9 +73,10 @@ class RequestHandler(BaseHTTPRequestHandler):
             print(f"Unexpected API error: {error}")
             self._send_json(500, {"error": "The server could not complete the request"})
 
-    def _run_api(self, method, path):
+    def _run_api(self, method, path, query):
         parts = [unquote(part) for part in path.strip("/").split("/")]
         db_path = self.server.db_path
+        query_values = parse_qs(query, keep_blank_values=True)
 
         if parts == ["api", "customers"] and method == "POST":
             return add_customer(self._read_json(), db_path), 201
@@ -93,18 +95,43 @@ class RequestHandler(BaseHTTPRequestHandler):
         if len(parts) == 3 and parts[:2] == ["api", "motor-policies"]:
             identifier = parts[2]
             if method == "GET":
-                record = inquire_motor_policy(identifier, db_path)
+                customer_number = self._customer_number(query_values)
+                record = inquire_motor_policy(
+                    identifier, db_path, customer_number=customer_number
+                )
                 if record is None:
                     raise ApiNotFound("Motor policy not found")
                 return record, 200
             if method == "PUT":
-                return update_motor_policy(
-                    identifier, self._read_json(), db_path
-                ), 200
+                try:
+                    record = update_motor_policy(
+                        identifier, self._read_json(), db_path
+                    )
+                except ValueError as error:
+                    if str(error) == "Motor policy does not exist":
+                        raise ApiNotFound("Motor policy not found") from error
+                    raise
+                return record, 200
             if method == "DELETE":
-                return delete_motor_policy(identifier, db_path), 200
+                customer_number = self._customer_number(query_values)
+                try:
+                    record = delete_motor_policy(
+                        identifier, db_path, customer_number=customer_number
+                    )
+                except ValueError as error:
+                    if str(error) == "Motor policy does not exist":
+                        raise ApiNotFound("Motor policy not found") from error
+                    raise
+                return record, 200
 
         raise ApiNotFound("API route not found")
+
+    @staticmethod
+    def _customer_number(query_values):
+        values = query_values.get("customer_number", [])
+        if len(values) != 1 or not values[0].strip():
+            raise ValueError("customer_number query parameter is required")
+        return values[0]
 
     def _read_json(self):
         content_type = self.headers.get("Content-Type", "").split(";", 1)[0].strip()

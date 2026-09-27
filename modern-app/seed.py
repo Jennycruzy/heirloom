@@ -3,7 +3,7 @@ These are invented hackathon test records, not records extracted from or
 produced by a running mainframe.
 """
 
-from database import add_customer, add_motor_policy, reset_database
+from database import _seed_customer, _seed_motor_policy, reset_database
 
 
 CUSTOMERS = [
@@ -70,9 +70,9 @@ MOTOR_POLICIES = [
 def seed_database(db_path=None):
     reset_database(db_path)
     for customer in CUSTOMERS:
-        add_customer(customer, db_path)
+        _seed_customer(customer, db_path)
     for policy in MOTOR_POLICIES:
-        add_motor_policy(policy, db_path)
+        _seed_motor_policy(policy, db_path)
     return {"customers": len(CUSTOMERS), "motor_policies": len(MOTOR_POLICIES)}
 
 

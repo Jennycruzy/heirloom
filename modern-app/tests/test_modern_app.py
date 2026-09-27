@@ -61,22 +61,24 @@ class DatabaseTests(TemporaryDatabaseTest):
         policy = {
             field: "" for field in database.MOTOR_POLICY_FIELDS
         }
-        policy.update(
-            policy_number="TESTPOL001",
-            customer_number="CUST000001",
-            car_make="Fiction",
-        )
+        policy.pop("policy_number")
+        policy.update(customer_number="CUST000001", car_make="Fiction")
         added = database.add_motor_policy(policy, self.db_path)
-        self.assertEqual(added["policy_number"], "TESTPOL001")
+        identifier = added["policy_number"]
 
+        update = dict(policy)
+        update["car_colour"] = "Blue"
         updated = database.update_motor_policy(
-            "TESTPOL001", {"car_colour": "Blue"}, self.db_path
+            identifier, update, self.db_path
         )
         self.assertEqual(updated["car_colour"], "Blue")
         self.assertEqual(
-            database.delete_motor_policy("TESTPOL001", self.db_path), updated
+            database.delete_motor_policy(
+                identifier, self.db_path, customer_number="CUST000001"
+            ),
+            updated,
         )
-        self.assertIsNone(database.inquire_motor_policy("TESTPOL001", self.db_path))
+        self.assertIsNone(database.inquire_motor_policy(identifier, self.db_path))
 
     def test_validation_rejects_unknown_and_overlength_fields(self):
         with self.assertRaisesRegex(ValueError, "Unknown field"):
@@ -126,6 +128,10 @@ class HttpTests(TemporaryDatabaseTest):
         self.assertEqual(response.status, 200)
         self.assertIn(b"CUST000001", content)
 
+        response, content = self.request("GET", "/static/workflows.mjs")
+        self.assertEqual(response.status, 200)
+        self.assertIn(b"load-update", content)
+
     def test_customer_inquiry_returns_seeded_record(self):
         response, content = self.request("GET", "/api/customers/CUST000001")
         self.assertEqual(response.status, 200)
@@ -133,7 +139,10 @@ class HttpTests(TemporaryDatabaseTest):
         self.assertEqual(json.loads(content)["data"]["last_name"], "Smith")
 
     def test_motor_inquiry_and_missing_api_route_use_json(self):
-        response, content = self.request("GET", "/api/motor-policies/POL001")
+        query = urlencode({"customer_number": "CUST000001"})
+        response, content = self.request(
+            "GET", f"/api/motor-policies/POL001?{query}"
+        )
         self.assertEqual(response.status, 200)
         self.assertEqual(json.loads(content)["data"]["customer_number"], "CUST000001")
 
@@ -142,13 +151,12 @@ class HttpTests(TemporaryDatabaseTest):
         self.assertEqual(json.loads(content), {"error": "API route not found"})
 
     def test_post_requires_json_and_returns_created_record(self):
-        customer = {
-            field: "" for field in database.CUSTOMER_FIELDS
-        }
-        customer.update(customer_number="TESTCUST01", first_name="Fiction")
+        customer = {field: "" for field in database.CUSTOMER_FIELDS}
+        customer.pop("customer_number")
+        customer.update(first_name="Fiction")
         response, content = self.request("POST", "/api/customers", customer)
         self.assertEqual(response.status, 201)
-        self.assertEqual(json.loads(content)["data"]["customer_number"], "TESTCUST01")
+        self.assertEqual(json.loads(content)["data"]["customer_number"], "0000000001")
 
         self.connection.request("POST", "/api/customers", body="{}")
         response = self.connection.getresponse()
@@ -160,15 +168,17 @@ class HttpTests(TemporaryDatabaseTest):
 
     def test_customer_add_update_inquire_lifecycle(self):
         customer = {field: "" for field in database.CUSTOMER_FIELDS}
+        customer.pop("customer_number")
         customer.update(
-            customer_number="PARITY0001",
             first_name="Fiction",
             postcode="ab1 2cd",
         )
 
         response, content = self.request("POST", "/api/customers", customer)
         self.assertEqual(response.status, 201)
-        self.assertEqual(json.loads(content)["data"]["postcode"], "AB1 2CD")
+        created = json.loads(content)["data"]
+        identifier = created["customer_number"]
+        self.assertEqual(created["postcode"], "AB1 2CD")
 
         update = {
             field: value
@@ -177,30 +187,32 @@ class HttpTests(TemporaryDatabaseTest):
         }
         update["last_name"] = "Updated"
         response, content = self.request(
-            "PUT", "/api/customers/PARITY0001", update
+            "PUT", f"/api/customers/{identifier}", update
         )
         self.assertEqual(response.status, 200)
         self.assertEqual(json.loads(content)["data"]["last_name"], "Updated")
 
-        response, content = self.request("GET", "/api/customers/PARITY0001")
+        response, content = self.request("GET", f"/api/customers/{identifier}")
         self.assertEqual(response.status, 200)
         self.assertEqual(json.loads(content)["data"]["first_name"], "Fiction")
 
-        response, content = self.request("DELETE", "/api/customers/PARITY0001")
+        response, content = self.request("DELETE", f"/api/customers/{identifier}")
         self.assertEqual(response.status, 404)
         self.assertEqual(json.loads(content), {"error": "API route not found"})
 
     def test_motor_policy_add_update_inquire_delete_lifecycle(self):
         policy = {field: "" for field in database.MOTOR_POLICY_FIELDS}
+        policy.pop("policy_number")
         policy.update(
-            policy_number="PARITY0001",
             customer_number="CUST000001",
             car_make="Fiction",
         )
 
         response, content = self.request("POST", "/api/motor-policies", policy)
         self.assertEqual(response.status, 201)
-        self.assertEqual(json.loads(content)["data"]["car_make"], "Fiction")
+        created = json.loads(content)["data"]
+        identifier = created["policy_number"]
+        self.assertEqual(created["car_make"], "Fiction")
 
         update = {
             field: value
@@ -209,33 +221,34 @@ class HttpTests(TemporaryDatabaseTest):
         }
         update["car_colour"] = "Blue"
         response, content = self.request(
-            "PUT", "/api/motor-policies/PARITY0001", update
+            "PUT", f"/api/motor-policies/{identifier}", update
         )
         self.assertEqual(response.status, 200)
         self.assertEqual(json.loads(content)["data"]["car_colour"], "Blue")
 
+        query = urlencode({"customer_number": "CUST000001"})
         response, content = self.request(
-            "GET", "/api/motor-policies/PARITY0001"
+            "GET", f"/api/motor-policies/{identifier}?{query}"
         )
         self.assertEqual(response.status, 200)
         self.assertEqual(json.loads(content)["data"]["customer_number"], "CUST000001")
 
         response, content = self.request(
-            "DELETE", "/api/motor-policies/PARITY0001"
+            "DELETE", f"/api/motor-policies/{identifier}?{query}"
         )
         self.assertEqual(response.status, 200)
-        self.assertEqual(json.loads(content)["data"]["policy_number"], "PARITY0001")
+        self.assertEqual(json.loads(content)["data"]["policy_number"], identifier)
 
         response, content = self.request(
-            "GET", "/api/motor-policies/PARITY0001"
+            "GET", f"/api/motor-policies/{identifier}?{query}"
         )
         self.assertEqual(response.status, 404)
         self.assertEqual(json.loads(content), {"error": "Motor policy not found"})
 
     def test_motor_policy_requires_an_existing_customer(self):
         policy = {field: "" for field in database.MOTOR_POLICY_FIELDS}
+        policy.pop("policy_number")
         policy.update(
-            policy_number="PARITY0002",
             customer_number="MISSING001",
         )
         response, content = self.request("POST", "/api/motor-policies", policy)
