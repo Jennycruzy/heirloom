@@ -187,6 +187,7 @@ legacy identifier sequence and the ambiguous motor-delete not-found behavior.
 - Before evidence: [`docs/reports/stage6-before-fix.md`](reports/stage6-before-fix.md)
 - After evidence: [`docs/reports/stage6-after-fix.md`](reports/stage6-after-fix.md)
 - Final Bob review: [`docs/reports/stage6-bob-final-review.md`](reports/stage6-bob-final-review.md)
+- Bob `READY` evidence: [`bob_sessions/heirloom_stage6_bob_ready.jpeg`](../bob_sessions/heirloom_stage6_bob_ready.jpeg)
 
 ---
 
