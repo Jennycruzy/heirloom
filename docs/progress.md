@@ -158,7 +158,7 @@ The original Bob report is preserved unchanged alongside the audit.
 
 ## Stage 6 — Repair only proven gaps and obtain final review
 
-**In progress: automated repairs verified on 2026-09-27.**
+**Completed: 2026-09-27**
 
 The six source-proven Stage 5 workflow differences have been repaired on the
 dedicated `fix/source-proven-parity-gaps` branch. The first pass remains
@@ -177,11 +177,16 @@ motor-policy retrieve-before-edit with both identifiers, and application-
 assigned customer numbers. The three screenshots are stored in
 `browser_evidence/` and linked from the after-fix report.
 
-**Still required before completion:** one tightly scoped final Bob review.
+**Final independent review:** Bob inspected the cited legacy source, repaired
+implementation, automated results, and browser evidence. All six repairs were
+confirmed, all four requested checks passed, and the overall result was
+`READY`. The report retains two honest, non-blocking uncertainties: the exact
+legacy identifier sequence and the ambiguous motor-delete not-found behavior.
 
 **Artefacts:**
 - Before evidence: [`docs/reports/stage6-before-fix.md`](reports/stage6-before-fix.md)
 - After evidence: [`docs/reports/stage6-after-fix.md`](reports/stage6-after-fix.md)
+- Final Bob review: [`docs/reports/stage6-bob-final-review.md`](reports/stage6-bob-final-review.md)
 
 ---
 
