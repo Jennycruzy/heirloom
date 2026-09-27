@@ -8,10 +8,22 @@ workflow parity.
 
 ## The demonstration
 
-Live entry point: <https://heirloom.54-154-121-30.sslip.io/>
+- Overview, findings and live verification: <https://heirloom.54-154-121-30.sslip.io/>
+- Clerk workspace with a live legacy trace: <https://heirloom.54-154-121-30.sslip.io/app/>
+- Reconstructed legacy screens with a field inspector:
+  <https://heirloom.54-154-121-30.sslip.io/dashboard/>
 
-Live reconstructed screens:
-<https://heirloom.54-154-121-30.sslip.io/dashboard/>
+A two-minute path: open the overview and expand any finding to follow its
+COBOL lines; then open
+<https://heirloom.54-154-121-30.sslip.io/app/#motor/inquire/POL001/CUST000002>
+and watch a policy stay hidden from a customer who does not hold it.
+
+To reproduce every number yourself:
+
+```sh
+git clone --recurse-submodules https://github.com/Jennycruzy/heirloom
+cd heirloom && python3 scripts/verify.py
+```
 
 1. The `dashboard/` reconstructs the old CICS maps directly from the committed
    catalogue. Each screen is an exact 24-row by 80-column character grid.

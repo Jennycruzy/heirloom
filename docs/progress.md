@@ -213,19 +213,34 @@ applications were not stopped or replaced.
 
 ## Stage 8 — Automate checks and publish measured results
 
-**In progress: first measurement recorded on 2026-09-27.**
+**Completed: 2026-09-27**
 
-An informal controlled retry measured an SSP1 task-evidence lookup at 50
-seconds manually and 30 seconds with Heirloom, a 20-second (40%) reduction.
-The initial attempt took two minutes with both methods, and the report preserves
-that result and the familiarity limitation rather than presenting a universal
-productivity claim.
+`python3 scripts/verify.py` runs every suite and publishes the measured result
+to `evidence/verification.json`, which the public landing page reads. GitHub
+Actions runs the same command on every push. A new citation check confirms
+that all 67 published source references resolve to real lines.
 
-**Artefact:**
-- Measurement and limitations: [`docs/reports/stage8-measurements.md`](reports/stage8-measurements.md)
+**Verified:**
+- Full verification: 113/113 across six suites (citations 67/67, parity 14/14,
+  application 20/20, workflows 5/5, screens, syntax 6/6).
+- Dashboard source links, previously 404 because they pointed at submodule
+  paths inside this repository, now open the pinned upstream GenApp file.
+- Updating a missing customer now returns 404; its new check failed before the
+  fix (`400 != 404`) and passes after.
+- The structural parity checks remain 14/14 against the redesigned workspace.
+- Observed timing: an informal controlled retry of an SSP1 evidence lookup
+  took 50 seconds by manual source review and 30 seconds with the earlier
+  dashboard, a 20-second (40%) reduction. The initial attempt took two minutes
+  both ways, so this is reported as one observation, not a general claim.
 
-Repository automation remains optional until the time-critical submission
-assets are complete.
+**Artefacts:**
+- Verification command: [`scripts/verify.py`](../scripts/verify.py)
+- Citation check: [`scripts/check_citations.py`](../scripts/check_citations.py)
+- Findings with citations: [`evidence/findings.json`](../evidence/findings.json)
+- Published result: [`evidence/verification.json`](../evidence/verification.json)
+- CI workflow: [`.github/workflows/verify.yml`](../.github/workflows/verify.yml)
+- Record: [`docs/reports/stage8-verification.md`](reports/stage8-verification.md)
+- Timing measurement and limitations: [`docs/reports/stage8-measurements.md`](reports/stage8-measurements.md)
 
 ---
 

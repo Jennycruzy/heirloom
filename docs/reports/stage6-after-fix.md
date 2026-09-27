@@ -39,7 +39,7 @@ node modern-app/tests/test_workflows.mjs
 ```
 
 Result: **passed.** Add hides the generated identifier from clerk entry;
-customer and policy updates have separate load and edit phases; motor inquiry
+customer and policy updates have separate load and edit steps; motor inquiry
 and delete require both identifiers.
 
 ## Catalogue parity checks
@@ -72,7 +72,7 @@ Evidence:
 - [`heirloom_stage6_motor_update_load.jpeg`](../../browser_evidence/heirloom_stage6_motor_update_load.jpeg)
 - [`heirloom_stage6_generated_customer_number.jpeg`](../../browser_evidence/heirloom_stage6_generated_customer_number.jpeg)
 
-## Remaining gate
+## Remaining review
 
 The automated repair and human browser confirmation are complete. Stage 6 is
 not marked complete until the final focused Bob review is recorded.

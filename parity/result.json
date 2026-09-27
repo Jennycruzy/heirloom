@@ -37,7 +37,7 @@
     },
     {
       "id": "SSC1-operations-html",
-      "description": "HTML task selector exposes exactly the confirmed operations",
+      "description": "HTML task selector exposes exactly the confirmed operations, in order",
       "status": "pass",
       "expected": [
         "inquire",
@@ -148,7 +148,7 @@
     },
     {
       "id": "SSP1-operations-html",
-      "description": "HTML task selector exposes exactly the confirmed operations",
+      "description": "HTML task selector exposes exactly the confirmed operations, in order",
       "status": "pass",
       "expected": [
         "inquire",

@@ -45,12 +45,14 @@ part of the modernization scope.
 | Evidence | Measured result |
 | --- | --- |
 | Workflow differences found before repair | **6 source-proven gaps**: generated identifiers, retrieve-before-edit updates, and composite policy identification |
-| Repaired application | **15/15** database, API, HTTP, and workflow checks passed |
+| First implementation, before review | **10/10** application checks and **14/14** structural parity checks passed, with all six gaps present |
+| Repaired application at the review | **15/15** database, API, HTTP, and workflow checks passed |
 | Independent final Bob review | **READY** — all six repairs confirmed against cited source and modern code |
 | Legacy catalogue validation | 20/20 checks passed |
 | Screen reconstruction | 6 screens, each exactly 24×80 |
 | Catalogue actions | 20 visible actions: 18 program-confirmed, 2 explicitly uncertain |
 | Exact catalogue-to-modern comparison | 14/14 checks passed |
+| Current full verification | **113/113** across six suites, including 67 resolved source citations ([record](evidence/verification.json)) |
 
 The six gaps are valuable findings, not planted defects. They concern generated
 identifiers, retrieve-before-edit updates, and the customer-plus-policy key used
@@ -60,8 +62,10 @@ any fix is attempted.
 
 Start with:
 
-- [Live judge demo](https://heirloom.54-154-121-30.sslip.io/)
+- [Live judge site](https://heirloom.54-154-121-30.sslip.io/)
+- [Live clerk workspace](https://heirloom.54-154-121-30.sslip.io/app/)
 - [Live reconstructed legacy screens](https://heirloom.54-154-121-30.sslip.io/dashboard/)
+- [Findings with citations](evidence/findings.json)
 - [Project progress and evidence](docs/progress.md)
 - [One-page guide for judges](docs/judge-guide.md)
 - [Verified legacy catalogue](catalogue/genapp.json)
@@ -72,37 +76,54 @@ Start with:
 
 ## Run locally
 
-Requirements: Python 3.11 and a modern browser. The application itself has no
-external Python or JavaScript dependency.
+Requirements: Python 3.11+ and a modern browser; Node.js 18+ only for the
+browser-module tests. The application has no external Python or JavaScript
+dependency.
 
 ```bash
+git clone --recurse-submodules https://github.com/Jennycruzy/heirloom.git
+cd heirloom
 python3 modern-app/seed.py
 python3 modern-app/server.py --port 8080
 ```
 
-Open <http://127.0.0.1:8080/>. The invented inquiry identifiers are
-`CUST000001` and `POL001`.
+One server provides everything from a single origin:
 
-The public judge deployment is available at
-<https://heirloom.54-154-121-30.sslip.io/>.
+| URL | What it shows |
+| --- | --- |
+| <http://127.0.0.1:8080/> | The story, the six findings with source links, live verification |
+| <http://127.0.0.1:8080/app/> | The repaired clerk workspace with a live legacy trace |
+| <http://127.0.0.1:8080/dashboard/> | All six GenApp maps rebuilt on a 24×80 grid, with a field inspector |
 
-To view the source-reconstructed screen dashboard in a second terminal:
-
-```bash
-python3 -m http.server 8000
-```
-
-Open <http://127.0.0.1:8000/dashboard/>.
+The invented identifiers are customers `CUST000001` and `CUST000002`, and
+policy `POL001` held by `CUST000001`. Try
+`/app/#motor/inquire/POL001/CUST000002`: the policy belongs to another
+customer, so it is not found (finding F-10).
 
 ## Verify
 
 ```bash
-python3 parity/check.py
-python3 -m unittest discover -s modern-app/tests -v
-node dashboard/test.mjs
+python3 scripts/verify.py
 ```
 
-The Stage 1 catalogue validator additionally uses the pinned validation setup
+This runs every check and publishes the measured result to
+[`evidence/verification.json`](evidence/verification.json), which the landing
+page reads. The record names the commit it ran against and whether the working
+tree was clean. The same command runs in GitHub Actions on every push.
+
+| Suite | What it proves |
+| --- | --- |
+| Citations | Every legacy, first-pass and regression-check citation in `evidence/findings.json` and every catalogue source reference resolves to real lines |
+| Parity | Catalogue operations, fields, lengths and numeric flags equal the modern database and browser form (no model) |
+| Application | Database, validation, API, HTTP routing, file allowlist and security-header checks |
+| Workflows | Generated identifiers and retrieve-before-edit rules in the browser workflow |
+| Screens | Every catalogue screen composes to an exact 24×80 grid |
+| Syntax | Every browser JavaScript module parses |
+
+Individual suites can still be run directly (`python3 parity/check.py`,
+`python3 -m unittest discover -s modern-app/tests -v`,
+`node dashboard/test.mjs`, `node modern-app/tests/test_workflows.mjs`). The
+Stage 1 catalogue validator additionally uses the pinned validation setup
 documented under `catalogue/scripts/`; its committed result is
 `catalogue/validation-result.json`.
 
@@ -139,9 +160,13 @@ they are not claimed as retroactive evidence for earlier sessions.
 | --- | --- |
 | `legacy/cics-genapp/` | Read-only IBM GenApp submodule pinned to a known commit |
 | `catalogue/` | Source-derived screens, tasks, rules, schema, and validation result |
-| `dashboard/` | Exact 24×80 legacy-screen reconstruction |
-| `modern-app/` | Scoped standard-library modernization and tests |
+| `evidence/` | Machine-readable findings with citations, and the published verification record |
+| `site/` | Landing page and the shared design system (IBM Plex, OFL) |
+| `dashboard/` | Exact 24×80 legacy-screen reconstruction and field inspector |
+| `modern-app/` | Scoped standard-library modernization, site server, and tests |
 | `parity/` | Deterministic catalogue-to-modern comparisons |
+| `scripts/` | One-command verification and citation checks |
+| `deploy/` | systemd unit and Nginx site for the public deployment |
 | `docs/reports/` | Human-readable findings and evidence audits |
 | `bob_sessions/` | IBM Bob evidence required for the project record |
 | `watsonx_sessions/` | watsonx generation and browser evidence |
@@ -150,9 +175,9 @@ they are not claimed as retroactive evidence for earlier sessions.
 
 Source extraction, screen reconstruction, first implementation, deterministic
 comparison, evidence-driven repairs, human browser checks, Bob's final
-independent review, and the HTTPS judge deployment are complete. Submission
-packaging is in progress; [docs/progress.md](docs/progress.md) is the
-authoritative status record.
+independent review, the HTTPS judge deployment, and automated verification
+with published results are complete. Submission packaging is in progress;
+[docs/progress.md](docs/progress.md) is the authoritative status record.
 
 ## Security and provenance
 
