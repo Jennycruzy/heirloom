@@ -152,6 +152,7 @@ The original Bob report is preserved unchanged alongside the audit.
 - Original Bob report: [`docs/reports/stage5-bob-semantic-review.md`](reports/stage5-bob-semantic-review.md)
 - Evidence audit: [`docs/reports/stage5-evidence-audit.md`](reports/stage5-evidence-audit.md)
 - Bob session evidence: [`bob_sessions/heirloom_stage5_bob_parallel_review.jpeg`](../bob_sessions/heirloom_stage5_bob_parallel_review.jpeg)
+- Bob final-result evidence: [`bob_sessions/heirloom_stage5_bob_final_result.jpeg`](../bob_sessions/heirloom_stage5_bob_final_result.jpeg)
 
 ---
 
