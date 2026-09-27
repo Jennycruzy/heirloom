@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-09-27T13:35:50+00:00",
+  "sourceCommit": "699922b71764bb47a9e49a67ee8ab4c5a6070090",
+  "workingTreeClean": true,
+  "legacyCommit": "f6f3f4b2580d31b7d8dcc31ce3e3676f4cceaaaa",
+  "legacyExecuted": false,
+  "status": "pass",
+  "summary": {
+    "passed": 113,
+    "total": 113
+  },
+  "suites": [
+    {
+      "name": "citations",
+      "description": "Every legacy, first-pass and regression-check citation resolves",
+      "command": "python3 scripts/check_citations.py",
+      "status": "pass",
+      "passed": 67,
+      "total": 67,
+      "durationMs": 77
+    },
+    {
+      "name": "parity",
+      "description": "Catalogue facts equal the modern database and browser form",
+      "command": "python3 parity/check.py",
+      "status": "pass",
+      "passed": 14,
+      "total": 14,
+      "durationMs": 84
+    },
+    {
+      "name": "application",
+      "description": "Database, validation, API and HTTP checks for the modern app",
+      "command": "python3 -m unittest discover -s modern-app/tests",
+      "status": "pass",
+      "passed": 20,
+      "total": 20,
+      "durationMs": 1982
+    },
+    {
+      "name": "workflows",
+      "description": "Browser workflow rules: generated identifiers and retrieve-before-edit",
+      "command": "node modern-app/tests/test_workflows.mjs",
+      "status": "pass",
+      "passed": 5,
+      "total": 5,
+      "durationMs": 62
+    },
+    {
+      "name": "screens",
+      "description": "Every catalogue screen composes to an exact 24x80 grid",
+      "command": "node dashboard/test.mjs",
+      "status": "pass",
+      "passed": 1,
+      "total": 1,
+      "durationMs": 85
+    },
+    {
+      "name": "syntax",
+      "description": "Every browser JavaScript module parses",
+      "command": "node --check <file>",
+      "status": "pass",
+      "passed": 6,
+      "total": 6,
+      "durationMs": 299
+    }
+  ]
+}
