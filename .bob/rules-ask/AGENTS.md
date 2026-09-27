@@ -3,7 +3,8 @@
 This file provides guidance to agents when working with code in this repository.
 
 ## Repo Context
-- This is a **template** repository — it contains no runnable application, no tests, and no build system.
+- This repository contains the runnable Heirloom application, dashboard,
+  catalogue, parity tooling, deployment files, and standard-library tests.
 - The primary documentation is `SECURITY.MD` (note: uppercase `.MD` extension).
 - `README.md` targets hackathon participants; `SECURITY.MD` has the definitive credential rules.
 

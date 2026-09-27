@@ -2,8 +2,10 @@
 
 This file provides guidance to agents when working with code in this repository.
 
-## This Repo Has No Application Code Yet
-This is a bare template. When adding application code:
+## Repository implementation
+This repository contains a tested Python/SQLite application, a browser-native
+dashboard, deterministic parity checks, and deployment configuration. When
+changing application code:
 - `.gitignore` already covers Node.js, Python, and Java build artifacts — no need to add standard entries.
 - `.env.example` must be kept in sync with any new env vars you introduce; never put real values in it.
 - Add project-specific `.gitignore` patterns only **after** the "DO NOT REMOVE ABOVE PATTERNS" comment (line 120).

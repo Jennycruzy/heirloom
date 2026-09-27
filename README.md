@@ -120,6 +120,19 @@ documented under `catalogue/scripts/`; its committed result is
 
 No model result is treated as proof by itself.
 
+## IBM Bob workspace configuration
+
+The repository includes project rules for Bob's Agent, Ask, and Plan modes,
+plus a reusable `heirloom-parity-review` Skill and a restricted
+`Heirloom Evidence Reviewer` custom mode. The Skill encodes the evidence,
+uncertainty, citation, and failing-before/passing-after workflow used by the
+project. These reusable additions document the workflow for future reviews;
+they are not claimed as retroactive evidence for earlier sessions.
+
+- [Parity-review Skill](.bob/skills/heirloom-parity-review/SKILL.md)
+- [Custom review mode](.bob/custom_modes.yaml)
+- [Submission-ready Bob PNG manifest](bob_sessions/README.md)
+
 ## Repository map
 
 | Path | Purpose |

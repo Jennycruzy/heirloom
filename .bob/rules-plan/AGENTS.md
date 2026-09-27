@@ -2,8 +2,9 @@
 
 This file provides guidance to agents when working with code in this repository.
 
-## Template Architecture Constraint
-This repo is a starting scaffold, not a complete application. Any architecture planned on top of it must:
+## Architecture constraint
+This repo contains the completed scoped Heirloom application. Any additional
+architecture planned on top of it must:
 - Keep all credentials in `.env` (never committed); document them in `.env.example`.
 - Not create files with "credential", "secret", or "password" in the name — they are gitignored globally and will silently disappear from git tracking.
 - Not create `config.json`, `config.yaml`, `config.yml`, `secrets.json`, or `database.yml` — all are gitignored by the security block.
