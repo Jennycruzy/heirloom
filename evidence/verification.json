@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-27T13:35:50+00:00",
-  "sourceCommit": "699922b71764bb47a9e49a67ee8ab4c5a6070090",
+  "generatedAt": "2026-09-27T13:49:47+00:00",
+  "sourceCommit": "012bcc8166cb8eecc9e42a9b589c92fd00acd482",
   "workingTreeClean": true,
   "legacyCommit": "f6f3f4b2580d31b7d8dcc31ce3e3676f4cceaaaa",
   "legacyExecuted": false,
   "status": "pass",
   "summary": {
-    "passed": 113,
-    "total": 113
+    "passed": 118,
+    "total": 118
   },
   "suites": [
     {
@@ -17,7 +17,7 @@
       "status": "pass",
       "passed": 67,
       "total": 67,
-      "durationMs": 77
+      "durationMs": 73
     },
     {
       "name": "parity",
@@ -33,9 +33,9 @@
       "description": "Database, validation, API and HTTP checks for the modern app",
       "command": "python3 -m unittest discover -s modern-app/tests",
       "status": "pass",
-      "passed": 20,
-      "total": 20,
-      "durationMs": 1982
+      "passed": 21,
+      "total": 21,
+      "durationMs": 2044
     },
     {
       "name": "workflows",
@@ -44,7 +44,7 @@
       "status": "pass",
       "passed": 5,
       "total": 5,
-      "durationMs": 62
+      "durationMs": 150
     },
     {
       "name": "screens",
@@ -53,16 +53,16 @@
       "status": "pass",
       "passed": 1,
       "total": 1,
-      "durationMs": 85
+      "durationMs": 101
     },
     {
       "name": "syntax",
       "description": "Every browser JavaScript module parses",
       "command": "node --check <file>",
       "status": "pass",
-      "passed": 6,
-      "total": 6,
-      "durationMs": 299
+      "passed": 10,
+      "total": 10,
+      "durationMs": 395
     }
   ]
 }
