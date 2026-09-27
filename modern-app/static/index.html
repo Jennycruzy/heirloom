@@ -14,16 +14,22 @@
 
   <header class="site-header">
     <div class="wrap wrap--wide site-header__inner">
-      <a class="wordmark" href="/" aria-label="Heirloom home">
+      <a class="wordmark" href="/" aria-label="Heirloom overview">
         <span class="wordmark__glyph" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
         HEIRLOOM
       </a>
-      <span class="app-badge mono">Heirloom Modern</span>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="/#findings">Findings</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        Menu
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="/findings/">Findings</a>
+        <a href="/method/">Method</a>
+        <a href="/verification/">Verification</a>
+        <span class="site-nav__sep" aria-hidden="true"></span>
         <a href="/dashboard/">Legacy screens</a>
-        <a class="site-nav__keep" href="/app/" aria-current="page">Workspace</a>
-        <a class="site-nav__external site-nav__keep" href="https://github.com/Jennycruzy/heirloom">GitHub&nbsp;↗</a>
+        <a class="site-nav__cta" href="/app/" aria-current="page">Open workspace</a>
+        <a class="site-nav__external" href="https://github.com/Jennycruzy/heirloom">GitHub&nbsp;↗</a>
       </nav>
     </div>
   </header>
@@ -31,8 +37,12 @@
   <main id="workspace" class="wrap wrap--wide workspace">
     <div class="workspace__head">
       <div>
-        <p class="eyebrow">Repaired modernization · SSC1 &amp; SSP1</p>
+        <ol class="breadcrumb" role="list">
+          <li><a href="/">Heirloom</a></li>
+          <li><span aria-current="page">Workspace</span></li>
+        </ol>
         <h1 class="workspace__title">Clerk workspace</h1>
+        <p class="workspace__lede">The repaired Heirloom Modern app for the SSC1 customer and SSP1 motor-policy tasks. Each step shows the legacy screen and rule it must honour.</p>
       </div>
       <div class="samples" aria-labelledby="samples-label">
         <p id="samples-label" class="samples__label">Invented test records <span class="muted">— no mainframe was run</span></p>
@@ -261,6 +271,31 @@
     </div>
   </main>
 
+  <nav class="page-next" aria-label="Continue reading">
+    <div class="wrap wrap--wide page-next__grid">
+        <a href="/dashboard/"><span>← Previous</span><strong>Legacy screens</strong></a>
+    </div>
+  </nav>
+
+  <footer class="site-footer">
+    <div class="wrap wrap--wide site-footer__grid">
+      <div>
+        <p><strong>Heirloom</strong> by Jenny Builds. Legacy source: <a href="https://github.com/cicsdev/cics-genapp/tree/f6f3f4b2580d31b7d8dcc31ce3e3676f4cceaaaa">IBM CICS GenApp</a> at commit <span class="mono">f6f3f4b</span>, used under EPL-2.0.</p>
+        <p>IBM does not endorse Heirloom. All customer and policy records shown are invented.</p>
+      </div>
+      <nav aria-label="Footer">
+        <a href="/">Overview</a>
+        <a href="/findings/">Findings</a>
+        <a href="/method/">Method</a>
+        <a href="/verification/">Verification</a>
+        <a href="/dashboard/">Legacy screens</a>
+        <a href="/app/">Workspace</a>
+        <a href="https://github.com/Jennycruzy/heirloom">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="/assets/nav.mjs"></script>
   <script type="module" src="/static/app.js"></script>
 </body>
 </html>

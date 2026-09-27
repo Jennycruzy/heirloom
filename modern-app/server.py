@@ -2,7 +2,8 @@
 
 One process serves everything a reviewer needs from a single origin:
 
-- ``/``            the project landing page (``site/``)
+- ``/``            the project overview (``site/``)
+- ``/findings/``, ``/method/``, ``/verification/``  its content pages
 - ``/app/``        the modernized clerk workspace (``modern-app/static/``)
 - ``/dashboard/``  the source-reconstructed legacy screens (``dashboard/``)
 - ``/evidence/``   committed, machine-readable evidence files
@@ -38,6 +39,9 @@ MAX_BODY_BYTES = 64 * 1024
 # reachable over HTTP, so the database, tests and legacy source stay private.
 PUBLIC_FILES = {
     "/": REPO_ROOT / "site" / "index.html",
+    "/findings/": REPO_ROOT / "site" / "findings" / "index.html",
+    "/method/": REPO_ROOT / "site" / "method" / "index.html",
+    "/verification/": REPO_ROOT / "site" / "verification" / "index.html",
     "/app/": STATIC_DIR / "index.html",
     "/dashboard/": REPO_ROOT / "dashboard" / "index.html",
     "/catalogue/genapp.json": REPO_ROOT / "catalogue" / "genapp.json",
@@ -56,7 +60,8 @@ PUBLIC_EXTENSIONS = {
     ".svg", ".txt", ".woff2",
 }
 PRIVATE_NAMES = {"test.mjs"}
-REDIRECTS = {"/app": "/app/", "/dashboard": "/dashboard/"}
+SITE_PAGES = ("/", "/findings/", "/method/", "/verification/", "/dashboard/", "/app/")
+REDIRECTS = {page.rstrip("/"): page for page in SITE_PAGES if page != "/"}
 
 CONTENT_TYPES = {
     ".mjs": "text/javascript",

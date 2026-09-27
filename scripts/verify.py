@@ -27,8 +27,12 @@ JAVASCRIPT_SOURCES = [
     "dashboard/lib.mjs",
     "modern-app/static/app.js",
     "modern-app/static/workflows.mjs",
-    "site/assets/landing.mjs",
+    "site/assets/findings.mjs",
+    "site/assets/nav.mjs",
+    "site/assets/overview.mjs",
     "site/assets/screen.mjs",
+    "site/assets/ui.mjs",
+    "site/assets/verification.mjs",
 ]
 
 

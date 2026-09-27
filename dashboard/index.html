@@ -14,15 +14,22 @@
 
   <header class="site-header">
     <div class="wrap wrap--wide site-header__inner">
-      <a class="wordmark" href="/" aria-label="Heirloom home">
+      <a class="wordmark" href="/" aria-label="Heirloom overview">
         <span class="wordmark__glyph" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
         HEIRLOOM
       </a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="/#findings">Findings</a>
-        <a class="site-nav__keep" href="/dashboard/" aria-current="page">Legacy screens</a>
-        <a class="site-nav__keep" href="/app/">Workspace</a>
-        <a class="site-nav__external site-nav__keep" href="https://github.com/Jennycruzy/heirloom">GitHub&nbsp;↗</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        Menu
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="/findings/">Findings</a>
+        <a href="/method/">Method</a>
+        <a href="/verification/">Verification</a>
+        <span class="site-nav__sep" aria-hidden="true"></span>
+        <a href="/dashboard/" aria-current="page">Legacy screens</a>
+        <a class="site-nav__cta" href="/app/">Open workspace</a>
+        <a class="site-nav__external" href="https://github.com/Jennycruzy/heirloom">GitHub&nbsp;↗</a>
       </nav>
     </div>
   </header>
@@ -30,8 +37,12 @@
   <main id="main" class="wrap wrap--wide dash">
     <div class="dash__head">
       <div class="dash__intro">
-        <p class="eyebrow">Source reconstruction · <span id="provenance-commit">pinned commit</span></p>
+        <ol class="breadcrumb" role="list">
+          <li><a href="/">Heirloom</a></li>
+          <li><span aria-current="page">Legacy screens</span></li>
+        </ol>
         <h1 class="dash__title">Legacy screens</h1>
+        <p class="eyebrow eyebrow--plain">Source reconstruction · <span id="provenance-commit">pinned commit</span></p>
         <p class="dash__lede">
           Every GenApp map, rebuilt from <span class="mono">ssmap.bms</span> onto an exact 24×80 grid.
           The mainframe was never run: what you see is what the source defines.
@@ -90,20 +101,32 @@
     </div>
   </main>
 
+  <nav class="page-next" aria-label="Continue reading">
+    <div class="wrap wrap--wide page-next__grid">
+        <a href="/verification/"><span>← Previous</span><strong>Verification</strong></a>
+        <a href="/app/"><span>Next →</span><strong>Workspace</strong></a>
+    </div>
+  </nav>
+
   <footer class="site-footer">
     <div class="wrap wrap--wide site-footer__grid">
       <div>
-        <p>Screens reconstructed from <a href="https://github.com/cicsdev/cics-genapp">IBM CICS GenApp</a> source, used under EPL-2.0. IBM does not endorse Heirloom.</p>
+        <p><strong>Heirloom</strong> by Jenny Builds. Legacy source: <a href="https://github.com/cicsdev/cics-genapp/tree/f6f3f4b2580d31b7d8dcc31ce3e3676f4cceaaaa">IBM CICS GenApp</a> at commit <span class="mono">f6f3f4b</span>, used under EPL-2.0.</p>
+        <p>IBM does not endorse Heirloom. All customer and policy records shown are invented.</p>
       </div>
       <nav aria-label="Footer">
         <a href="/">Overview</a>
+        <a href="/findings/">Findings</a>
+        <a href="/method/">Method</a>
+        <a href="/verification/">Verification</a>
+        <a href="/dashboard/">Legacy screens</a>
         <a href="/app/">Workspace</a>
-        <a href="/catalogue/genapp.json">genapp.json</a>
         <a href="https://github.com/Jennycruzy/heirloom">GitHub</a>
       </nav>
     </div>
   </footer>
 
+  <script type="module" src="/assets/nav.mjs"></script>
   <script type="module" src="./app.mjs"></script>
 </body>
 </html>

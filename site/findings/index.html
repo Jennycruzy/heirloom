@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Findings — Heirloom</title>
+  <meta name="description" content="Six workflow differences between IBM CICS GenApp and its first modernization, each cited to COBOL lines and proven repaired.">
+  <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/heirloom.css">
+  <link rel="stylesheet" href="/assets/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="wordmark" href="/" aria-label="Heirloom overview">
+        <span class="wordmark__glyph" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        HEIRLOOM
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        Menu
+      </button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="/findings/" aria-current="page">Findings</a>
+        <a href="/method/">Method</a>
+        <a href="/verification/">Verification</a>
+        <span class="site-nav__sep" aria-hidden="true"></span>
+        <a href="/dashboard/">Legacy screens</a>
+        <a class="site-nav__cta" href="/app/">Open workspace</a>
+        <a class="site-nav__external" href="https://github.com/Jennycruzy/heirloom">GitHub&nbsp;↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="wrap page-head__inner">
+        <ol class="breadcrumb" role="list">
+          <li><a href="/">Heirloom</a></li>
+          <li><span aria-current="page">Findings</span></li>
+        </ol>
+        <h1 class="page-head__title">Six differences, <em>each with a line number.</em></h1>
+        <p class="lede">
+          Every finding cites the legacy COBOL that defines the behaviour, the first-pass code
+          that broke it, and the regression check that failed before the repair and passes now.
+          Links open the exact lines at the pinned commits.
+        </p>
+      </div>
+    </section>
+
+    <section class="findings" aria-label="Findings">
+      <div class="wrap">
+        <div class="findings__filters" role="group" aria-label="Filter findings by transaction">
+          <button type="button" class="filter" data-filter="all" aria-pressed="true">All <span class="num" data-count="all">6</span></button>
+          <button type="button" class="filter" data-filter="SSC1" aria-pressed="false">SSC1 Customer <span class="num" data-count="SSC1">2</span></button>
+          <button type="button" class="filter" data-filter="SSP1" aria-pressed="false">SSP1 Motor policy <span class="num" data-count="SSP1">4</span></button>
+        </div>
+        <ol id="findings-list" class="findings__list" role="list">
+          <li class="finding finding--placeholder">Loading findings from <span class="mono">evidence/findings.json</span>…</li>
+        </ol>
+        <noscript><p>Findings are published in <a href="/evidence/findings.json">evidence/findings.json</a> and explained in the <a href="https://github.com/Jennycruzy/heirloom/blob/main/docs/reports/stage5-evidence-audit.md">evidence audit</a>.</p></noscript>
+      </div>
+    </section>
+
+    <section class="explore" aria-labelledby="explore-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">See it live</p>
+          <h2 id="explore-title" class="headline">Walk three repairs <em>in the workspace.</em></h2>
+        </div>
+        <div class="explore__grid explore__grid--three">
+          <a class="scenario" href="/app/#customer/update/CUST000001">
+            <span class="scenario__tag mono">F-05 · SSC1</span>
+            <h3>Update must retrieve first</h3>
+            <p>Open Update for customer <span class="mono">CUST000001</span>. The fields stay locked until the live record is loaded.</p>
+            <span class="scenario__go mono">Try it →</span>
+          </a>
+          <a class="scenario" href="/app/#motor/inquire/POL001/CUST000002">
+            <span class="scenario__tag mono">F-10 · SSP1</span>
+            <h3>The wrong customer sees nothing</h3>
+            <p>Inquire policy <span class="mono">POL001</span> as customer <span class="mono">CUST000002</span>. It belongs to someone else, so it is not found.</p>
+            <span class="scenario__go mono">Try it →</span>
+          </a>
+          <a class="scenario" href="/app/#customer/add">
+            <span class="scenario__tag mono">F-02 · SSC1</span>
+            <h3>The system assigns the number</h3>
+            <p>Add a customer. The number field is locked and the application returns the identifier, as the legacy add program does.</p>
+            <span class="scenario__go mono">Try it →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="boundary" aria-labelledby="boundary-title">
+      <div class="wrap boundary__grid">
+        <div class="section-head section-head--tight">
+          <p class="eyebrow">Evidence boundary</p>
+          <h2 id="boundary-title" class="headline">What Heirloom <em>refuses to claim.</em></h2>
+          <p class="section-head__body">
+            A parity tool that guesses is worse than none. Where the source does not settle a
+            question, the answer is recorded as <span class="mono">cannot determine</span> and left open.
+          </p>
+        </div>
+        <ul class="boundary__list" id="uncertain-list" role="list">
+          <li class="boundary__item">
+            <h3>The mainframe was never run</h3>
+            <p>Every legacy claim comes from BMS and COBOL source at a pinned commit. Nothing was compiled, emulated or executed.</p>
+          </li>
+          <li class="boundary__item">
+            <h3>Every record is invented</h3>
+            <p>The demo customers and policies are fictional test data created for this project, never presented as GenApp or client data.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <nav class="page-next" aria-label="Continue reading">
+    <div class="wrap page-next__grid">
+        <a href="/"><span>← Previous</span><strong>Overview</strong></a>
+        <a href="/method/"><span>Next →</span><strong>Method</strong></a>
+    </div>
+  </nav>
+
+  <footer class="site-footer">
+    <div class="wrap site-footer__grid">
+      <div>
+        <p><strong>Heirloom</strong> by Jenny Builds. Legacy source: <a href="https://github.com/cicsdev/cics-genapp/tree/f6f3f4b2580d31b7d8dcc31ce3e3676f4cceaaaa">IBM CICS GenApp</a> at commit <span class="mono">f6f3f4b</span>, used under EPL-2.0.</p>
+        <p>IBM does not endorse Heirloom. All customer and policy records shown are invented.</p>
+      </div>
+      <nav aria-label="Footer">
+        <a href="/">Overview</a>
+        <a href="/findings/">Findings</a>
+        <a href="/method/">Method</a>
+        <a href="/verification/">Verification</a>
+        <a href="/dashboard/">Legacy screens</a>
+        <a href="/app/">Workspace</a>
+        <a href="https://github.com/Jennycruzy/heirloom">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="/assets/nav.mjs"></script>
+  <script type="module" src="/assets/findings.mjs"></script>
+</body>
+</html>

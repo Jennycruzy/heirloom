@@ -160,6 +160,23 @@ class HttpTests(TemporaryDatabaseTest):
         self.assertEqual(response.status, 308)
         self.assertEqual(response.getheader("Location"), "/app/")
 
+    def test_every_page_shares_one_menu(self):
+        menus = {}
+        for page in server.SITE_PAGES:
+            with self.subTest(page=page):
+                response, content = self.request("GET", page)
+                self.assertEqual(response.status, 200)
+                html = content.decode("utf-8")
+                start = html.index('<nav id="site-nav"')
+                menu = html[start:html.index("</nav>", start)]
+                menus[page] = menu.replace(' aria-current="page"', "")
+                self.assertIn('src="/assets/nav.mjs"', html)
+        self.assertEqual(len(set(menus.values())), 1, "pages must share the same menu")
+
+        response, _ = self.request("GET", "/findings")
+        self.assertEqual(response.status, 308)
+        self.assertEqual(response.getheader("Location"), "/findings/")
+
     def test_private_files_are_never_served(self):
         for path in (
             "/dashboard/test.mjs",
