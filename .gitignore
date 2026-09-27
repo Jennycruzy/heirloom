@@ -122,3 +122,6 @@ build/
 modern-app/db/*.sqlite3
 modern-app/__pycache__/
 modern-app/tests/__pycache__/
+
+# CircleCI configuration is project code, not a credential file
+!.circleci/config.yml
