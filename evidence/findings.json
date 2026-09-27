@@ -1,0 +1,278 @@
+{
+  "source": {
+    "legacyRepository": "https://github.com/cicsdev/cics-genapp",
+    "legacyCommit": "f6f3f4b2580d31b7d8dcc31ce3e3676f4cceaaaa",
+    "firstPassRef": "stage3-first-pass",
+    "audit": "docs/reports/stage5-evidence-audit.md",
+    "beforeRepair": "docs/reports/stage6-before-fix.md",
+    "afterRepair": "docs/reports/stage6-after-fix.md",
+    "finalReview": "docs/reports/stage6-bob-final-review.md"
+  },
+  "baseline": {
+    "applicationChecksPassed": 10,
+    "applicationChecksTotal": 10,
+    "parityChecksPassed": 14,
+    "parityChecksTotal": 14,
+    "workflowGaps": 6
+  },
+  "repaired": {
+    "applicationChecksPassed": 15,
+    "applicationChecksTotal": 15,
+    "parityChecksPassed": 14,
+    "parityChecksTotal": 14,
+    "workflowGapsOpen": 0,
+    "finalReview": "READY"
+  },
+  "findings": [
+    {
+      "id": "F-02",
+      "transactionId": "SSC1",
+      "task": "Add customer",
+      "title": "The system assigns the customer number",
+      "legacy": "The Add path clears the customer number, calls the add program, and shows the number the program returns. The clerk never types it.",
+      "firstPass": "Required the clerk to type a customer number and stored whatever was entered.",
+      "repair": "Customer Add locks the number field and the application assigns the next identifier inside one database transaction.",
+      "legacyEvidence": [
+        {
+          "file": "base/src/lgtestc1.cbl",
+          "lineStart": 113,
+          "lineEnd": 138
+        },
+        {
+          "file": "base/src/lgacdb01.cbl",
+          "lineStart": 170,
+          "lineEnd": 179
+        }
+      ],
+      "firstPassEvidence": [
+        {
+          "file": "modern-app/database.py",
+          "lineStart": 159,
+          "lineEnd": 168
+        }
+      ],
+      "regressionChecks": [
+        {
+          "file": "modern-app/tests/test_modern_app.py",
+          "name": "test_add_customer_assigns_identifier"
+        }
+      ]
+    },
+    {
+      "id": "F-05",
+      "transactionId": "SSC1",
+      "task": "Update customer",
+      "title": "Customer update retrieves before it edits",
+      "legacy": "Update first inquires the live record, puts it on the screen, receives the clerk's edits, and only then writes the change.",
+      "firstPass": "Sent the update straight away from whatever happened to be in the form.",
+      "repair": "Update is now two steps: retrieve the record by customer number, then edit and save the loaded values.",
+      "legacyEvidence": [
+        {
+          "file": "base/src/lgtestc1.cbl",
+          "lineStart": 148,
+          "lineEnd": 193
+        }
+      ],
+      "firstPassEvidence": [
+        {
+          "file": "modern-app/static/app.js",
+          "lineStart": 98,
+          "lineEnd": 116
+        }
+      ],
+      "regressionChecks": [
+        {
+          "file": "modern-app/tests/test_workflows.mjs",
+          "name": "customer update loads before editable fields open"
+        }
+      ]
+    },
+    {
+      "id": "F-10",
+      "transactionId": "SSP1",
+      "task": "Inquire motor policy",
+      "title": "Motor inquiry needs customer and policy number",
+      "legacy": "The inquiry passes both numbers and the query filters on both, so a policy is only shown to the customer who holds it.",
+      "firstPass": "Looked a policy up by policy number alone and disabled the customer-number field.",
+      "repair": "Inquiry requires both identifiers and returns not found when they do not belong together.",
+      "legacyEvidence": [
+        {
+          "file": "base/src/lgtestp1.cbl",
+          "lineStart": 68,
+          "lineEnd": 75
+        },
+        {
+          "file": "base/src/lgipdb01.cbl",
+          "lineStart": 563,
+          "lineEnd": 570
+        }
+      ],
+      "firstPassEvidence": [
+        {
+          "file": "modern-app/database.py",
+          "lineStart": 222,
+          "lineEnd": 230
+        },
+        {
+          "file": "modern-app/static/app.js",
+          "lineStart": 81,
+          "lineEnd": 96
+        }
+      ],
+      "regressionChecks": [
+        {
+          "file": "modern-app/tests/test_modern_app.py",
+          "name": "test_motor_inquiry_requires_matching_customer_and_policy"
+        }
+      ]
+    },
+    {
+      "id": "F-11",
+      "transactionId": "SSP1",
+      "task": "Add motor policy",
+      "title": "The database assigns the policy number",
+      "legacy": "Add never copies a clerk-entered policy number. The insert lets the database allocate one and returns it.",
+      "firstPass": "Required the clerk to type a policy number and stored it as given.",
+      "repair": "Motor Add locks the policy-number field and the application assigns the identifier.",
+      "legacyEvidence": [
+        {
+          "file": "base/src/lgtestp1.cbl",
+          "lineStart": 97,
+          "lineEnd": 125
+        },
+        {
+          "file": "base/src/lgapdb01.cbl",
+          "lineStart": 257,
+          "lineEnd": 313
+        }
+      ],
+      "firstPassEvidence": [
+        {
+          "file": "modern-app/database.py",
+          "lineStart": 209,
+          "lineEnd": 219
+        }
+      ],
+      "regressionChecks": [
+        {
+          "file": "modern-app/tests/test_modern_app.py",
+          "name": "test_add_motor_policy_assigns_identifier"
+        }
+      ]
+    },
+    {
+      "id": "F-12",
+      "transactionId": "SSP1",
+      "task": "Delete motor policy",
+      "title": "Delete is keyed by customer and policy",
+      "legacy": "Delete passes both numbers and the DELETE statement matches on both, so one customer cannot remove another customer's policy.",
+      "firstPass": "Deleted by policy number alone, with the customer-number field disabled.",
+      "repair": "Delete requires both identifiers; a mismatched pair deletes nothing and returns not found.",
+      "legacyEvidence": [
+        {
+          "file": "base/src/lgtestp1.cbl",
+          "lineStart": 135,
+          "lineEnd": 145
+        },
+        {
+          "file": "base/src/lgdpdb01.cbl",
+          "lineStart": 148,
+          "lineEnd": 153
+        },
+        {
+          "file": "base/src/lgdpdb01.cbl",
+          "lineStart": 186,
+          "lineEnd": 194
+        }
+      ],
+      "firstPassEvidence": [
+        {
+          "file": "modern-app/database.py",
+          "lineStart": 251,
+          "lineEnd": 260
+        }
+      ],
+      "regressionChecks": [
+        {
+          "file": "modern-app/tests/test_modern_app.py",
+          "name": "test_motor_delete_does_not_remove_another_customers_policy"
+        }
+      ]
+    },
+    {
+      "id": "F-13",
+      "transactionId": "SSP1",
+      "task": "Update motor policy",
+      "title": "Motor update retrieves first, keyed by both numbers",
+      "legacy": "Update inquires with both numbers, shows the record, takes the clerk's edits, then updates through a cursor that filters on customer and policy.",
+      "firstPass": "Sent the update directly and targeted the row by policy number alone.",
+      "repair": "Update retrieves with both identifiers first, keeps the policy number locked, and writes only where both match.",
+      "legacyEvidence": [
+        {
+          "file": "base/src/lgtestp1.cbl",
+          "lineStart": 169,
+          "lineEnd": 219
+        },
+        {
+          "file": "base/src/lgupdb01.cbl",
+          "lineStart": 126,
+          "lineEnd": 143
+        }
+      ],
+      "firstPassEvidence": [
+        {
+          "file": "modern-app/database.py",
+          "lineStart": 233,
+          "lineEnd": 248
+        },
+        {
+          "file": "modern-app/static/app.js",
+          "lineStart": 128,
+          "lineEnd": 148
+        }
+      ],
+      "regressionChecks": [
+        {
+          "file": "modern-app/tests/test_modern_app.py",
+          "name": "test_motor_update_uses_customer_and_policy_as_the_key"
+        },
+        {
+          "file": "modern-app/tests/test_workflows.mjs",
+          "name": "motor update loads with both identifiers before editing"
+        }
+      ]
+    }
+  ],
+  "uncertain": [
+    {
+      "title": "Exact identifier sequence",
+      "detail": "Customer numbers come from a CICS named counter and policy numbers from the database. The exact next value cannot be reproduced without running the mainframe, so Heirloom claims only that the system assigns the number.",
+      "legacyEvidence": [
+        {
+          "file": "base/src/lgacdb01.cbl",
+          "lineStart": 199,
+          "lineEnd": 201
+        }
+      ]
+    },
+    {
+      "title": "Deleting a policy that does not exist",
+      "detail": "The source comment says a missing record counts as success, but the SQLCODE check that follows treats it as an error. Heirloom records this as cannot determine and does not claim a match.",
+      "legacyEvidence": [
+        {
+          "file": "base/src/lgdpdb01.cbl",
+          "lineStart": 196,
+          "lineEnd": 202
+        }
+      ]
+    },
+    {
+      "title": "Two claim-menu options on SSMAPP5",
+      "detail": "The policy-claim screen defines Inquire and Add options, but no LGTESTP5 presentation program exists in the source tree. Both stay screen-only and cannot determine."
+    },
+    {
+      "title": "Date format enforcement",
+      "detail": "The legacy screens show yyyy-mm-dd, but the source does not prove the format is validated. No date rule was invented."
+    }
+  ]
+}

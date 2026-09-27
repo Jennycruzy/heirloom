@@ -1,33 +1,35 @@
-# Heirloom Stage 2 dashboard
+# Legacy screen dashboard
 
-This dashboard reconstructs IBM CICS GenApp screens from the committed
-`catalogue/genapp.json`. The legacy application is read from source; no
-mainframe is run.
+Rebuilds every IBM CICS GenApp BMS map from the committed
+`catalogue/genapp.json` onto an exact 24×80 grid. The legacy application is
+read from source; no mainframe is run.
+
+- Screen tabs for all six maps; SSC1 and SSP1 are marked as modernized.
+- A field inspector: hover or click any field for its BMS name, role,
+  position, length, attributes and the `ssmap.bms` line that defines it.
+- Every action on the screen, with its confirmed or cannot-determine status,
+  presentation and business programs, and source evidence.
+- Source links open the file in `cicsdev/cics-genapp` at the pinned commit.
+  (Files inside a submodule are not browsable under this repository's URL.)
+- Deep links: `/dashboard/#SSMAPP1/T-SSP1-4` opens a screen and action.
 
 ## Run
 
-From the repository root:
+The dashboard is served by the application server with the rest of the site:
 
 ```sh
-python3 -m http.server 8000
+python3 modern-app/server.py --port 8080
 ```
 
-Open <http://localhost:8000/dashboard/>.
+Open <http://127.0.0.1:8080/dashboard/>.
 
 ## Test
-
-From the repository root:
 
 ```sh
 node dashboard/test.mjs
 ```
 
-The test checks the verified Stage 1 counts, every 24×80 composition, final
-cell ownership, cursor attributes, literal placement, evidence URLs, SSP5's
-cannot-determine status, and that modern parity remains not assessed.
-
-## Current scope
-
-Stage 2 proves source extraction and screen reconstruction only. Modernization
-and browser parity checks have not yet been implemented, so this dashboard does
-not show modern-app pass or fail results.
+The test checks the verified catalogue counts, every 24×80 composition, final
+cell ownership, cursor attributes, literal placement, source-link URLs, SSP5's
+cannot-determine status, and that the catalogue's modern parity field remains
+`not-assessed` (the catalogue records the legacy source only).

@@ -87,6 +87,15 @@ def initialize_database(db_path=None):
         _create_schema(connection)
 
 
+def count_records(db_path=None):
+    with connect(db_path) as connection:
+        customers = connection.execute("SELECT COUNT(*) FROM customers").fetchone()
+        policies = connection.execute(
+            "SELECT COUNT(*) FROM motor_policies"
+        ).fetchone()
+    return {"customers": customers[0], "motor_policies": policies[0]}
+
+
 def reset_database(db_path=None):
     with connect(db_path) as connection:
         connection.execute("DROP TABLE IF EXISTS motor_policies")

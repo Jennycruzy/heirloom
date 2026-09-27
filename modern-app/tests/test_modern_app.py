@@ -95,7 +95,9 @@ class HttpTests(TemporaryDatabaseTest):
     def setUp(self):
         super().setUp()
         self.httpd = server.create_server("127.0.0.1", 0, self.db_path)
-        self.thread = threading.Thread(target=self.httpd.serve_forever, daemon=True)
+        self.thread = threading.Thread(
+            target=self.httpd.serve_forever, kwargs={"poll_interval": 0.05}, daemon=True
+        )
         self.thread.start()
         self.connection = http.client.HTTPConnection(
             "127.0.0.1", self.httpd.server_port, timeout=5
@@ -122,15 +124,86 @@ class HttpTests(TemporaryDatabaseTest):
     def test_home_page_and_javascript_are_served(self):
         response, content = self.request("GET", "/")
         self.assertEqual(response.status, 200)
+        self.assertIn(b"Can the clerk still do their job?", content)
+
+        response, content = self.request("GET", "/app/")
+        self.assertEqual(response.status, 200)
         self.assertIn(b"Heirloom Modern", content)
 
         response, content = self.request("GET", "/static/app.js")
         self.assertEqual(response.status, 200)
         self.assertIn(b"CUST000001", content)
+        self.assertTrue(response.getheader("Content-Type").startswith("text/javascript"))
 
         response, content = self.request("GET", "/static/workflows.mjs")
         self.assertEqual(response.status, 200)
         self.assertIn(b"load-update", content)
+
+    def test_dashboard_and_evidence_share_the_same_origin(self):
+        response, content = self.request("GET", "/dashboard/")
+        self.assertEqual(response.status, 200)
+        self.assertIn(b"lib.mjs", self.request("GET", "/dashboard/app.mjs")[1])
+
+        response, content = self.request("GET", "/catalogue/genapp.json")
+        self.assertEqual(response.status, 200)
+        self.assertEqual(len(json.loads(content)["screens"]), 6)
+
+        response, content = self.request("GET", "/evidence/findings.json")
+        self.assertEqual(response.status, 200)
+        self.assertEqual(len(json.loads(content)["findings"]), 6)
+
+        response, content = self.request("GET", "/evidence/mapping.json")
+        self.assertEqual(response.status, 200)
+        self.assertEqual(set(json.loads(content)), {"SSC1", "SSP1"})
+
+        response, _ = self.request("GET", "/app")
+        self.assertEqual(response.status, 308)
+        self.assertEqual(response.getheader("Location"), "/app/")
+
+    def test_private_files_are_never_served(self):
+        for path in (
+            "/dashboard/test.mjs",
+            "/dashboard/README.md",
+            "/static/../database.py",
+            "/static/%2e%2e/server.py",
+            "/assets/../index.html",
+            "/modern-app/database.py",
+            "/legacy/cics-genapp/base/src/lgtestc1.cbl",
+            "/evidence/../README.md",
+            "/.env",
+        ):
+            with self.subTest(path=path):
+                response, _ = self.request("GET", path)
+                self.assertEqual(response.status, 404)
+
+    def test_responses_carry_security_headers_and_support_head(self):
+        response, content = self.request("HEAD", "/")
+        self.assertEqual(response.status, 200)
+        self.assertEqual(content, b"")
+        self.assertGreater(int(response.getheader("Content-Length")), 0)
+        self.assertIn("default-src 'self'", response.getheader("Content-Security-Policy"))
+        self.assertEqual(response.getheader("X-Content-Type-Options"), "nosniff")
+
+        response, _ = self.request("POST", "/")
+        self.assertEqual(response.status, 405)
+
+        response, _ = self.request("GET", "/api/customers/CUST000001")
+        self.assertEqual(response.getheader("Cache-Control"), "no-store")
+
+    def test_health_reports_record_counts(self):
+        response, content = self.request("GET", "/api/health")
+        self.assertEqual(response.status, 200)
+        self.assertEqual(
+            json.loads(content)["data"],
+            {"status": "ok", "records": {"customers": 2, "motor_policies": 2}},
+        )
+
+    def test_updating_a_missing_customer_is_not_found(self):
+        response, content = self.request(
+            "PUT", "/api/customers/CUST999999", {"first_name": "Nobody"}
+        )
+        self.assertEqual(response.status, 404)
+        self.assertEqual(json.loads(content), {"error": "Customer not found"})
 
     def test_customer_inquiry_returns_seeded_record(self):
         response, content = self.request("GET", "/api/customers/CUST000001")

@@ -5,12 +5,12 @@ const IDENTIFIERS = {
 
 export function createWorkflow(entity, operation) {
   if (!IDENTIFIERS[entity]) throw new Error(`Unknown workflow entity: ${entity}`);
-  return { entity, operation, phase: operation === "update" ? "load" : "ready" };
+  return { entity, operation, step: operation === "update" ? "load" : "ready" };
 }
 
 export function markLoaded(workflow) {
   if (workflow.operation !== "update") return workflow;
-  return { ...workflow, phase: "edit" };
+  return { ...workflow, step: "edit" };
 }
 
 export function enabledFields(workflow, fields) {
@@ -22,10 +22,10 @@ export function enabledFields(workflow, fields) {
   if (workflow.operation === "inquire" || workflow.operation === "delete") {
     return identifiers;
   }
-  if (workflow.operation === "update" && workflow.phase === "load") {
+  if (workflow.operation === "update" && workflow.step === "load") {
     return identifiers;
   }
-  if (workflow.operation === "update" && workflow.phase === "edit") {
+  if (workflow.operation === "update" && workflow.step === "edit") {
     const immutable = workflow.entity === "customer" ? "customer_number" : "policy_number";
     return fields.filter((field) => field !== immutable);
   }
@@ -34,7 +34,7 @@ export function enabledFields(workflow, fields) {
 
 export function requestIntent(workflow) {
   if (workflow.operation === "update") {
-    return workflow.phase === "load" ? "load-update" : "submit-update";
+    return workflow.step === "load" ? "load-update" : "submit-update";
   }
   return workflow.operation;
 }

@@ -2,104 +2,263 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Heirloom Modern</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clerk workspace — Heirloom Modern</title>
+  <meta name="description" content="The repaired Heirloom modernization of the IBM CICS GenApp SSC1 customer and SSP1 motor-policy workflows, with a live legacy trace for every task.">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/heirloom.css">
   <link rel="stylesheet" href="/static/styles.css">
 </head>
-<body>
-  <header>
-    <p class="eyebrow">First-pass modernization</p>
-    <h1>Heirloom Modern</h1>
-    <p class="lede">Customer and motor policy workspace</p>
-    <p class="notice">Customer and motor policy workflows only.</p>
-    <p class="provenance">Test records on this page are invented for the hackathon; no mainframe was run.</p>
-    <nav class="judge-nav" aria-label="Judge navigation">
-      <a href="/dashboard/">Explore the reconstructed legacy screens</a>
-      <a href="https://github.com/Jennycruzy/heirloom">Inspect the evidence on GitHub</a>
-    </nav>
-    <div class="proof-strip" aria-label="Verified project results">
-      <span><strong>6</strong> workflow gaps found and repaired</span>
-      <span><strong>15/15</strong> application checks passed</span>
-      <span><strong>14/14</strong> catalogue parity checks passed</span>
+<body class="app">
+  <a class="skip-link" href="#workspace">Skip to the workspace</a>
+
+  <header class="site-header">
+    <div class="wrap wrap--wide site-header__inner">
+      <a class="wordmark" href="/" aria-label="Heirloom home">
+        <span class="wordmark__glyph" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        HEIRLOOM
+      </a>
+      <span class="app-badge mono">Heirloom Modern</span>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/#findings">Findings</a>
+        <a href="/dashboard/">Legacy screens</a>
+        <a class="site-nav__keep" href="/app/" aria-current="page">Workspace</a>
+        <a class="site-nav__external site-nav__keep" href="https://github.com/Jennycruzy/heirloom">GitHub&nbsp;↗</a>
+      </nav>
     </div>
   </header>
 
-  <main>
-    <div id="app-status" role="status" aria-live="polite"></div>
-
-    <section id="customer-workspace" class="workspace-card">
-      <div class="section-heading">
-        <p class="transaction">SSC1</p>
-        <h2>Customer</h2>
+  <main id="workspace" class="wrap wrap--wide workspace">
+    <div class="workspace__head">
+      <div>
+        <p class="eyebrow">Repaired modernization · SSC1 &amp; SSP1</p>
+        <h1 class="workspace__title">Clerk workspace</h1>
       </div>
-      <form id="customer-form">
-        <div class="operation-row">
-          <label for="customer-operation">Task</label>
-          <select id="customer-operation" name="customer-operation">
-            <option value="inquire">Inquire customer</option>
-            <option value="add">Add customer</option>
-            <option value="update">Update customer</option>
-          </select>
+      <div class="samples" aria-labelledby="samples-label">
+        <p id="samples-label" class="samples__label">Invented test records <span class="muted">— no mainframe was run</span></p>
+        <div class="samples__list">
+          <button type="button" class="sample" data-sample="customer" data-customer="CUST000001">CUST000001 <span>Alice Smith</span></button>
+          <button type="button" class="sample" data-sample="customer" data-customer="CUST000002">CUST000002 <span>Bob Johnson</span></button>
+          <button type="button" class="sample" data-sample="motor" data-policy="POL001" data-customer="CUST000001">POL001 <span>CUST000001</span></button>
+          <button type="button" class="sample" data-sample="motor" data-policy="POL002" data-customer="CUST000002">POL002 <span>CUST000002</span></button>
         </div>
-        <fieldset>
-          <legend>Customer details</legend>
-          <div class="form-grid">
-            <div class="form-group"><label for="customer-customer_number">Customer number</label><input type="text" id="customer-customer_number" name="customer_number" maxlength="10"></div>
-            <div class="form-group"><label for="customer-first_name">First name</label><input type="text" id="customer-first_name" name="first_name" maxlength="10"></div>
-            <div class="form-group"><label for="customer-last_name">Last name</label><input type="text" id="customer-last_name" name="last_name" maxlength="20"></div>
-            <div class="form-group"><label for="customer-date_of_birth">Date of birth</label><input type="text" id="customer-date_of_birth" name="date_of_birth" maxlength="10"></div>
-            <div class="form-group"><label for="customer-house_name">House name</label><input type="text" id="customer-house_name" name="house_name" maxlength="20"></div>
-            <div class="form-group"><label for="customer-house_number">House number</label><input type="text" id="customer-house_number" name="house_number" maxlength="4"></div>
-            <div class="form-group"><label for="customer-postcode">Postcode</label><input type="text" id="customer-postcode" name="postcode" maxlength="8"></div>
-            <div class="form-group"><label for="customer-home_phone">Home phone</label><input type="text" id="customer-home_phone" name="home_phone" maxlength="20"></div>
-            <div class="form-group"><label for="customer-mobile_phone">Mobile phone</label><input type="text" id="customer-mobile_phone" name="mobile_phone" maxlength="20"></div>
-            <div class="form-group"><label for="customer-email">Email</label><input type="text" id="customer-email" name="email" maxlength="27"></div>
-          </div>
-          <p class="date-hint">Date format shown by the legacy screen: yyyy-mm-dd; enforcement could not be determined.</p>
-        </fieldset>
-        <div class="actions"><button id="customer-submit" type="submit">Run customer task</button><button type="reset" class="secondary">Clear</button></div>
-      </form>
-      <section id="customer-result" class="result-panel"><h3>Customer result</h3><dl></dl></section>
-    </section>
-
-    <section id="motor-workspace" class="workspace-card">
-      <div class="section-heading">
-        <p class="transaction">SSP1</p>
-        <h2>Motor policy</h2>
       </div>
-      <form id="motor-form">
-        <div class="operation-row">
-          <label for="motor-operation">Task</label>
-          <select id="motor-operation" name="motor-operation">
-            <option value="inquire">Inquire motor policy</option>
-            <option value="add">Add motor policy</option>
-            <option value="delete">Delete motor policy</option>
-            <option value="update">Update motor policy</option>
-          </select>
+    </div>
+
+    <div class="entity-tabs" role="tablist" aria-label="Legacy transaction">
+      <button type="button" role="tab" id="tab-customer" class="entity-tab" aria-controls="customer-workspace" aria-selected="true" data-entity="customer">
+        <span class="entity-tab__code mono">SSC1</span> Customer
+      </button>
+      <button type="button" role="tab" id="tab-motor" class="entity-tab" aria-controls="motor-workspace" aria-selected="false" data-entity="motor" tabindex="-1">
+        <span class="entity-tab__code mono">SSP1</span> Motor policy
+      </button>
+    </div>
+
+    <div class="workspace__grid">
+      <div class="workspace__main">
+        <div id="app-status" class="status" role="status" aria-live="polite"></div>
+
+        <section id="customer-workspace" class="panel" role="tabpanel" aria-labelledby="tab-customer">
+          <form id="customer-form" class="task-form" novalidate>
+            <fieldset class="tasks">
+              <legend class="visually-hidden">Customer task</legend>
+              <label class="task"><input type="radio" name="customer-operation" value="inquire" checked><span>Inquire</span></label>
+              <label class="task"><input type="radio" name="customer-operation" value="add"><span>Add</span></label>
+              <label class="task"><input type="radio" name="customer-operation" value="update"><span>Update</span></label>
+            </fieldset>
+
+            <ol class="steps" id="customer-steps" role="list" aria-label="Update steps" hidden>
+              <li class="steps__item" data-step="load"><span class="steps__n mono">1</span> Retrieve the live record</li>
+              <li class="steps__item" data-step="edit"><span class="steps__n mono">2</span> Edit and save</li>
+            </ol>
+            <p class="task-rule" id="customer-rule"></p>
+
+            <div class="fields">
+              <div class="field field--id" data-field="customer_number">
+                <label for="customer-customer_number">Customer number</label>
+                <input type="text" id="customer-customer_number" name="customer_number" maxlength="10" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="first_name">
+                <label for="customer-first_name">First name</label>
+                <input type="text" id="customer-first_name" name="first_name" maxlength="10" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="last_name">
+                <label for="customer-last_name">Last name</label>
+                <input type="text" id="customer-last_name" name="last_name" maxlength="20" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="date_of_birth">
+                <label for="customer-date_of_birth">Date of birth</label>
+                <input type="text" id="customer-date_of_birth" name="date_of_birth" maxlength="10" autocomplete="off" spellcheck="false" placeholder="yyyy-mm-dd">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="house_name">
+                <label for="customer-house_name">House name</label>
+                <input type="text" id="customer-house_name" name="house_name" maxlength="20" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="house_number">
+                <label for="customer-house_number">House number</label>
+                <input type="text" id="customer-house_number" name="house_number" maxlength="4" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="postcode">
+                <label for="customer-postcode">Postcode</label>
+                <input type="text" id="customer-postcode" name="postcode" maxlength="8" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="home_phone">
+                <label for="customer-home_phone">Home phone</label>
+                <input type="text" id="customer-home_phone" name="home_phone" maxlength="20" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="mobile_phone">
+                <label for="customer-mobile_phone">Mobile phone</label>
+                <input type="text" id="customer-mobile_phone" name="mobile_phone" maxlength="20" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="email">
+                <label for="customer-email">Email</label>
+                <input type="text" id="customer-email" name="email" maxlength="27" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+            </div>
+            <p class="date-hint">Dates appear on the legacy screen as yyyy-mm-dd. The source does not prove the format is enforced, so no date rule is applied.</p>
+
+            <div class="actions">
+              <button id="customer-submit" class="button" type="submit">Run customer task</button>
+              <button type="reset" class="button button--ghost">Clear</button>
+            </div>
+          </form>
+          <section id="customer-result" class="result" aria-labelledby="customer-result-title">
+            <h2 id="customer-result-title" class="result__title">Customer record</h2>
+            <dl class="result__grid"></dl>
+            <p class="result__empty">Run a task to see the record the server returns.</p>
+          </section>
+        </section>
+
+        <section id="motor-workspace" class="panel" role="tabpanel" aria-labelledby="tab-motor" hidden>
+          <form id="motor-form" class="task-form" novalidate>
+            <fieldset class="tasks">
+              <legend class="visually-hidden">Motor policy task</legend>
+              <label class="task"><input type="radio" name="motor-operation" value="inquire" checked><span>Inquire</span></label>
+              <label class="task"><input type="radio" name="motor-operation" value="add"><span>Add</span></label>
+              <label class="task"><input type="radio" name="motor-operation" value="delete"><span>Delete</span></label>
+              <label class="task"><input type="radio" name="motor-operation" value="update"><span>Update</span></label>
+            </fieldset>
+
+            <ol class="steps" id="motor-steps" role="list" aria-label="Update steps" hidden>
+              <li class="steps__item" data-step="load"><span class="steps__n mono">1</span> Retrieve with both numbers</li>
+              <li class="steps__item" data-step="edit"><span class="steps__n mono">2</span> Edit and save</li>
+            </ol>
+            <p class="task-rule" id="motor-rule"></p>
+
+            <div class="fields">
+              <div class="field field--id" data-field="policy_number">
+                <label for="motor-policy_number">Policy number</label>
+                <input type="text" id="motor-policy_number" name="policy_number" maxlength="10" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field field--id" data-field="customer_number">
+                <label for="motor-customer_number">Customer number</label>
+                <input type="text" id="motor-customer_number" name="customer_number" maxlength="10" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="issue_date">
+                <label for="motor-issue_date">Issue date</label>
+                <input type="text" id="motor-issue_date" name="issue_date" maxlength="10" autocomplete="off" spellcheck="false" placeholder="yyyy-mm-dd">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="expiry_date">
+                <label for="motor-expiry_date">Expiry date</label>
+                <input type="text" id="motor-expiry_date" name="expiry_date" maxlength="10" autocomplete="off" spellcheck="false" placeholder="yyyy-mm-dd">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="car_make">
+                <label for="motor-car_make">Car make</label>
+                <input type="text" id="motor-car_make" name="car_make" maxlength="20" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="car_model">
+                <label for="motor-car_model">Car model</label>
+                <input type="text" id="motor-car_model" name="car_model" maxlength="20" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="car_value">
+                <label for="motor-car_value">Car value</label>
+                <input type="text" id="motor-car_value" name="car_value" maxlength="6" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="registration">
+                <label for="motor-registration">Registration</label>
+                <input type="text" id="motor-registration" name="registration" maxlength="7" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="car_colour">
+                <label for="motor-car_colour">Car colour</label>
+                <input type="text" id="motor-car_colour" name="car_colour" maxlength="8" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="engine_cc">
+                <label for="motor-engine_cc">CC</label>
+                <input type="text" id="motor-engine_cc" name="engine_cc" maxlength="8" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="manufacture_date">
+                <label for="motor-manufacture_date">Manufacture date</label>
+                <input type="text" id="motor-manufacture_date" name="manufacture_date" maxlength="10" autocomplete="off" spellcheck="false" placeholder="yyyy-mm-dd">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="accident_count">
+                <label for="motor-accident_count">Number of accidents</label>
+                <input type="text" id="motor-accident_count" name="accident_count" maxlength="6" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+              <div class="field" data-field="policy_premium">
+                <label for="motor-policy_premium">Policy premium</label>
+                <input type="text" id="motor-policy_premium" name="policy_premium" maxlength="6" autocomplete="off" spellcheck="false">
+                <span class="field__meta" aria-hidden="true"></span>
+              </div>
+            </div>
+            <p class="date-hint">Dates appear on the legacy screen as yyyy-mm-dd. The source does not prove the format is enforced, so no date rule is applied.</p>
+
+            <div class="actions">
+              <button id="motor-submit" class="button" type="submit">Run motor policy task</button>
+              <button type="reset" class="button button--ghost">Clear</button>
+            </div>
+          </form>
+          <section id="motor-result" class="result" aria-labelledby="motor-result-title">
+            <h2 id="motor-result-title" class="result__title">Motor policy record</h2>
+            <dl class="result__grid"></dl>
+            <p class="result__empty">Run a task to see the record the server returns.</p>
+          </section>
+        </section>
+      </div>
+
+      <aside class="trace" aria-labelledby="trace-title">
+        <div class="trace__head">
+          <h2 id="trace-title" class="trace__title">Legacy trace</h2>
+          <span class="chip" id="trace-map">SSMAPC1</span>
         </div>
-        <fieldset>
-          <legend>Motor policy details</legend>
-          <div class="form-grid">
-            <div class="form-group"><label for="motor-policy_number">Policy number</label><input type="text" id="motor-policy_number" name="policy_number" maxlength="10"></div>
-            <div class="form-group"><label for="motor-customer_number">Customer number</label><input type="text" id="motor-customer_number" name="customer_number" maxlength="10"></div>
-            <div class="form-group"><label for="motor-issue_date">Issue date</label><input type="text" id="motor-issue_date" name="issue_date" maxlength="10"></div>
-            <div class="form-group"><label for="motor-expiry_date">Expiry date</label><input type="text" id="motor-expiry_date" name="expiry_date" maxlength="10"></div>
-            <div class="form-group"><label for="motor-car_make">Car make</label><input type="text" id="motor-car_make" name="car_make" maxlength="20"></div>
-            <div class="form-group"><label for="motor-car_model">Car model</label><input type="text" id="motor-car_model" name="car_model" maxlength="20"></div>
-            <div class="form-group"><label for="motor-car_value">Car value</label><input type="text" id="motor-car_value" name="car_value" maxlength="6"></div>
-            <div class="form-group"><label for="motor-registration">Registration</label><input type="text" id="motor-registration" name="registration" maxlength="7"></div>
-            <div class="form-group"><label for="motor-car_colour">Car colour</label><input type="text" id="motor-car_colour" name="car_colour" maxlength="8"></div>
-            <div class="form-group"><label for="motor-engine_cc">CC</label><input type="text" id="motor-engine_cc" name="engine_cc" maxlength="8"></div>
-            <div class="form-group"><label for="motor-manufacture_date">Manufacture date</label><input type="text" id="motor-manufacture_date" name="manufacture_date" maxlength="10"></div>
-            <div class="form-group"><label for="motor-accident_count">Number of accidents</label><input type="text" id="motor-accident_count" name="accident_count" maxlength="6"></div>
-            <div class="form-group"><label for="motor-policy_premium">Policy premium</label><input type="text" id="motor-policy_premium" name="policy_premium" maxlength="6"></div>
-          </div>
-          <p class="date-hint">Date format shown by the legacy screen: yyyy-mm-dd; enforcement could not be determined.</p>
-        </fieldset>
-        <div class="actions"><button id="motor-submit" type="submit">Run motor policy task</button><button type="reset" class="secondary">Clear</button></div>
-      </form>
-      <section id="motor-result" class="result-panel"><h3>Motor policy result</h3><dl></dl></section>
-    </section>
+        <div class="crt crt--compact">
+          <div class="crt__bar"><span id="trace-bar">Option 1 · Cust Inquiry</span><span>24×80</span></div>
+          <div class="crt__scroll"><div id="trace-screen" class="screen--compact"></div></div>
+        </div>
+        <ul class="trace__legend" role="list">
+          <li><span class="swatch swatch--active" aria-hidden="true"></span>Fields this step accepts</li>
+          <li><span class="swatch swatch--locked" aria-hidden="true"></span>Assigned by the system</li>
+        </ul>
+        <div class="trace__rule" id="trace-rule"></div>
+        <div class="log">
+          <h3 class="log__title">Requests <span class="muted mono" id="log-count">0</span></h3>
+          <ol class="log__list" id="request-log" role="list">
+            <li class="log__empty">API calls made by this page appear here.</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
   </main>
 
   <script type="module" src="/static/app.js"></script>

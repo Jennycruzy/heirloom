@@ -23,7 +23,10 @@ class ModernHtmlParser(HTMLParser):
 
     def handle_starttag(self, tag, attributes):
         attrs = dict(attributes)
-        if tag == "input" and "id" in attrs:
+        if tag == "input" and attrs.get("type") == "radio" and attrs.get("name"):
+            # A radio group is a task selector: its options are its values in order.
+            self.options.setdefault(attrs["name"], []).append(attrs.get("value"))
+        elif tag == "input" and "id" in attrs:
             self.inputs[attrs["id"]] = attrs
         elif tag == "select":
             self.select_stack.append(attrs.get("id"))
@@ -99,7 +102,7 @@ def main():
         checks.append(
             result(
                 f"{transaction_id}-operations-html",
-                "HTML task selector exposes exactly the confirmed operations",
+                "HTML task selector exposes exactly the confirmed operations, in order",
                 html_operations == expected_operations,
                 expected_operations,
                 html_operations,
@@ -197,7 +200,7 @@ def main():
     output = ROOT / "parity" / "result.json"
     output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(
-        f"Stage 4 deterministic checks: {passed}/{len(checks)} passed; "
+        f"Deterministic parity checks: {passed}/{len(checks)} passed; "
         f"report: {output.relative_to(ROOT)}"
     )
     if passed != len(checks):

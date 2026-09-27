@@ -2,86 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Heirloom Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Legacy screens — Heirloom</title>
+  <meta name="description" content="Every IBM CICS GenApp BMS map rebuilt from source on an exact 24×80 grid, with each field and task traced to its source line.">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/heirloom.css">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <header>
-    <h1>Heirloom</h1>
-    <p>The tests pass. Can the clerk still do their job?</p>
-    <p>The legacy application was read from source; no mainframe was run.</p>
-    <nav class="judge-nav" aria-label="Judge navigation">
-      <a href="/">Try the repaired modern application</a>
-      <a href="https://github.com/Jennycruzy/heirloom">Inspect the evidence on GitHub</a>
-    </nav>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap wrap--wide site-header__inner">
+      <a class="wordmark" href="/" aria-label="Heirloom home">
+        <span class="wordmark__glyph" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        HEIRLOOM
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/#findings">Findings</a>
+        <a class="site-nav__keep" href="/dashboard/" aria-current="page">Legacy screens</a>
+        <a class="site-nav__keep" href="/app/">Workspace</a>
+        <a class="site-nav__external site-nav__keep" href="https://github.com/Jennycruzy/heirloom">GitHub&nbsp;↗</a>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <section id="data-status" role="status" aria-live="polite">
-      <p>Loading…</p>
-    </section>
-
-    <section class="count-section" aria-labelledby="counts-title">
-      <h2 id="counts-title">Source catalogue</h2>
-      <div class="count-grid">
-        <div class="count-card" id="screen-count">—</div>
-        <div class="count-card" id="task-count">—</div>
-        <div class="count-card" id="confirmed-count">—</div>
-        <div class="count-card" id="uncertain-count">—</div>
+  <main id="main" class="wrap wrap--wide dash">
+    <div class="dash__head">
+      <div class="dash__intro">
+        <p class="eyebrow">Source reconstruction · <span id="provenance-commit">pinned commit</span></p>
+        <h1 class="dash__title">Legacy screens</h1>
+        <p class="dash__lede">
+          Every GenApp map, rebuilt from <span class="mono">ssmap.bms</span> onto an exact 24×80 grid.
+          The mainframe was never run: what you see is what the source defines.
+          Hover or select any field to inspect its definition.
+        </p>
       </div>
-    </section>
+      <dl class="counts" aria-label="Catalogue counts">
+        <div><dt>Screens</dt><dd id="screen-count" class="num">—</dd></div>
+        <div><dt>Screen actions</dt><dd id="task-count" class="num">—</dd></div>
+        <div><dt>Confirmed by program</dt><dd id="confirmed-count" class="num">—</dd></div>
+        <div><dt>Cannot determine</dt><dd id="uncertain-count" class="num">—</dd></div>
+      </dl>
+    </div>
 
-    <section id="current-scope">
-      <h2>Current scope</h2>
-      <p>This dashboard reconstructs all six source-catalogued screens. The linked modern application implements the verified SSC1 customer and SSP1 motor-policy workflows; its repaired branch passed 15 application checks and 14 catalogue parity checks before Bob returned READY.</p>
-    </section>
+    <p id="data-status" class="data-status" role="status" aria-live="polite">Loading the catalogue…</p>
 
-    <section class="control-panel screen-control">
-      <label for="screen-select">Screen</label>
-      <select id="screen-select">
-        <option>Loading…</option>
-      </select>
-    </section>
+    <div class="screen-tabs" role="tablist" aria-label="Legacy screen" id="screen-tabs"></div>
 
-    <section class="control-panel task-control">
-      <label for="task-select">Task</label>
-      <select id="task-select">
-        <option>Loading…</option>
-      </select>
-    </section>
+    <div class="dash__grid">
+      <section class="dash__screen" aria-labelledby="screen-title">
+        <div class="crt">
+          <div class="crt__bar">
+            <span id="screen-title">Loading…</span>
+            <span id="screen-size">24×80</span>
+          </div>
+          <div class="crt__scroll"><div id="terminal-grid"></div></div>
+        </div>
 
-    <section id="screen-heading" class="screen-heading">
-      <h2 id="screen-title">Loading…</h2>
-    </section>
+        <div class="inspector" aria-live="polite">
+          <div class="inspector__head">
+            <h2 class="inspector__title">Field inspector</h2>
+            <p class="inspector__hint muted" id="inspector-hint">Hover or click a field on the screen.</p>
+          </div>
+          <dl class="inspector__grid" id="inspector"></dl>
+        </div>
 
-    <section class="terminal-scroll" aria-labelledby="screen-title">
-      <div id="terminal-grid" class="terminal-grid" role="img" aria-label="Reconstructed 24 row by 80 column legacy screen"></div>
-    </section>
+        <ul class="legend" role="list" aria-label="Screen legend">
+          <li><span class="legend__swatch legend__swatch--text" aria-hidden="true">Aa</span>Protected text</li>
+          <li><span class="legend__swatch legend__swatch--input" aria-hidden="true">__</span>Clerk entry field</li>
+          <li><span class="legend__swatch legend__swatch--option" aria-hidden="true">1.</span>Menu option</li>
+          <li><span class="legend__swatch legend__swatch--error" aria-hidden="true">!!</span>Error message line</li>
+          <li><span class="legend__swatch legend__swatch--active" aria-hidden="true"></span>Selected field</li>
+        </ul>
+      </section>
 
-    <aside class="terminal-legend" aria-label="Screen legend">
-      <p>Legend:</p>
-      <ul>
-        <li>Protected text: <span class="cell cell--protected">█</span></li>
-        <li>Editable field: <span class="cell cell--editable">_</span></li>
-        <li>Menu option: <span class="cell cell--menu-option">▓</span></li>
-        <li>Cursor field: <span class="cell cell--cursor">█</span></li>
-        <li>Error field: <span class="cell cell--error">!</span></li>
-      </ul>
-    </aside>
-
-    <section id="task-details">
-      <h2 id="task-name">Loading…</h2>
-      <p id="task-status">Loading…</p>
-      <p id="task-outcome">Loading…</p>
-      <p id="task-operation">Loading…</p>
-      <p id="task-legacy-status">Loading…</p>
-      <p id="task-modern-status">Loading…</p>
-      <p id="task-programs">Loading…</p>
-      <p id="task-note">Loading…</p>
-      <div id="task-evidence">Loading…</div>
-    </section>
+      <aside class="dash__tasks" aria-labelledby="tasks-title">
+        <div class="tasks-head">
+          <h2 id="tasks-title" class="tasks-head__title">Actions on this screen</h2>
+          <span class="chip" id="scope-chip">—</span>
+        </div>
+        <ol class="task-list" id="task-list" role="list"></ol>
+        <article class="task-detail" id="task-details" aria-live="polite">
+          <p class="muted">Select an action.</p>
+        </article>
+      </aside>
+    </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="wrap wrap--wide site-footer__grid">
+      <div>
+        <p>Screens reconstructed from <a href="https://github.com/cicsdev/cics-genapp">IBM CICS GenApp</a> source, used under EPL-2.0. IBM does not endorse Heirloom.</p>
+      </div>
+      <nav aria-label="Footer">
+        <a href="/">Overview</a>
+        <a href="/app/">Workspace</a>
+        <a href="/catalogue/genapp.json">genapp.json</a>
+        <a href="https://github.com/Jennycruzy/heirloom">GitHub</a>
+      </nav>
+    </div>
+  </footer>
 
   <script type="module" src="./app.mjs"></script>
 </body>

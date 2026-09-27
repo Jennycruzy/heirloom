@@ -1,8 +1,9 @@
 # Deterministic parity checks
 
-Stage 4 compares verified SSC1 and SSP1 catalogue facts with the modern data
-model and browser form. It does not use model judgement and does not modify the
-catalogue.
+This checker compares verified SSC1 and SSP1 catalogue facts with the modern
+data model and browser form. A task list may be a `<select>` or a radio group;
+either way its values must equal the confirmed operations, in order. It does
+not use model judgement and does not modify the catalogue.
 
 Run from the repository root:
 

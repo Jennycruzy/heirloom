@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Heirloom — workflow parity for mainframe modernization</title>
+  <meta name="description" content="Heirloom reads IBM CICS GenApp green-screen source, rebuilds the modern app, and proves with cited evidence whether the clerk's workflow survived. The tests passed; six workflows were still wrong.">
+  <meta property="og:title" content="Heirloom — the tests pass. Can the clerk still do their job?">
+  <meta property="og:description" content="Source-cited workflow parity for IBM CICS GenApp: 14/14 structural checks passed, and six business workflows were still wrong until Heirloom found them.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101210" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/ibm-plex-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/heirloom.css">
+  <link rel="stylesheet" href="/assets/landing.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="wordmark" href="/" aria-label="Heirloom home">
+        <span class="wordmark__glyph" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        HEIRLOOM
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#findings">Findings</a>
+        <a href="#method">Method</a>
+        <a href="#verification">Verification</a>
+        <a href="/dashboard/">Legacy screens</a>
+        <a class="site-nav__keep" href="/app/">Workspace</a>
+        <a class="site-nav__external site-nav__keep" href="https://github.com/Jennycruzy/heirloom">GitHub&nbsp;↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow">IBM CICS GenApp · modernization parity</p>
+          <h1 id="hero-title" class="display">The tests pass.<br><em>Can the clerk still do their job?</em></h1>
+          <p class="lede">
+            Heirloom reads the green-screen source of a mainframe application, rebuilds it
+            as a modern web app, and then proves, line by cited line, whether the business
+            workflow survived. Not whether the code compiles. Whether the work still works.
+          </p>
+          <div class="hero__actions">
+            <a class="button" href="#findings">See the six findings <span class="button__arrow" aria-hidden="true">→</span></a>
+            <a class="button button--ghost" href="/app/">Open the clerk workspace</a>
+          </div>
+          <p class="hero__verified" id="verified-line" aria-live="polite">
+            <span class="dot" aria-hidden="true"></span>
+            <span>Loading the latest verification…</span>
+          </p>
+        </div>
+
+        <figure class="hero__screen">
+          <div class="crt">
+            <div class="crt__bar">
+              <span id="hero-screen-label">SSMAPC1 · 24×80</span>
+              <div class="screen-switch" role="group" aria-label="Choose a legacy screen">
+                <button type="button" class="screen-switch__button" data-map="SSMAPC1" aria-pressed="true">SSC1</button>
+                <button type="button" class="screen-switch__button" data-map="SSMAPP1" aria-pressed="false">SSP1</button>
+              </div>
+            </div>
+            <div class="crt__scroll"><div id="hero-screen" class="screen--large"></div></div>
+          </div>
+          <figcaption class="field-probe" aria-live="polite">
+            <span class="field-probe__name mono" id="probe-name">ENT1CNO</span>
+            <span class="field-probe__detail" id="probe-detail">Reconstructed from <span class="mono">ssmap.bms</span> at the pinned commit. The mainframe was never run.</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- The problem -->
+    <section class="contrast" aria-labelledby="contrast-title">
+      <div class="wrap">
+        <div class="contrast__head">
+          <p class="eyebrow">The blind spot</p>
+          <h2 id="contrast-title" class="headline">Every check was green.<br><em>Six workflows were still wrong.</em></h2>
+          <p class="contrast__body">
+            The first modern implementation passed all of its application tests and every
+            structural parity check: every field present, every length exact, every task on
+            the menu. Reading the COBOL behind the screens showed that customer and policy
+            numbers were typed by the clerk instead of assigned by the system, updates skipped
+            the retrieve-then-edit sequence, and motor policies could be reached without the
+            customer who holds them.
+          </p>
+        </div>
+
+        <div class="ledger" role="table" aria-label="First pass compared with the repaired application">
+          <div class="ledger__row ledger__row--head" role="row">
+            <span role="columnheader">Build</span>
+            <span role="columnheader">Application checks</span>
+            <span role="columnheader">Structural parity</span>
+            <span role="columnheader">Workflow gaps</span>
+            <span role="columnheader">Independent review</span>
+          </div>
+          <div class="ledger__row" role="row">
+            <span role="rowheader" class="ledger__build">First pass<small class="mono">tag stage3-first-pass</small></span>
+            <span role="cell" class="ledger__value" data-ledger="baseline.application">10/10</span>
+            <span role="cell" class="ledger__value" data-ledger="baseline.parity">14/14</span>
+            <span role="cell" class="ledger__value ledger__value--gap" data-ledger="baseline.gaps">6 found</span>
+            <span role="cell" class="ledger__value ledger__value--muted">Not yet reviewed</span>
+          </div>
+          <div class="ledger__row" role="row">
+            <span role="rowheader" class="ledger__build">Repaired<small class="mono">branch main</small></span>
+            <span role="cell" class="ledger__value" data-ledger="repaired.application">15/15</span>
+            <span role="cell" class="ledger__value" data-ledger="repaired.parity">14/14</span>
+            <span role="cell" class="ledger__value ledger__value--fixed" data-ledger="repaired.gaps">0 open</span>
+            <span role="cell" class="ledger__value ledger__value--fixed" data-ledger="repaired.review">READY</span>
+          </div>
+        </div>
+        <p class="contrast__note">
+          The gaps were found, not planted. The untouched first pass is preserved at a Git tag
+          so anyone can reproduce the failing checks before the repair.
+        </p>
+      </div>
+    </section>
+
+    <!-- Findings -->
+    <section id="findings" class="findings" aria-labelledby="findings-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Findings</p>
+          <h2 id="findings-title" class="headline">Six differences, <em>each with a line number.</em></h2>
+          <p class="section-head__body">
+            Every finding cites the legacy COBOL that defines the behaviour, the first-pass code
+            that broke it, and the regression check that failed before the repair and passes now.
+            Links open the exact lines at the pinned commits.
+          </p>
+        </div>
+        <div class="findings__filters" role="group" aria-label="Filter findings by transaction">
+          <button type="button" class="filter" data-filter="all" aria-pressed="true">All <span class="num" data-count="all">6</span></button>
+          <button type="button" class="filter" data-filter="SSC1" aria-pressed="false">SSC1 Customer <span class="num" data-count="SSC1">2</span></button>
+          <button type="button" class="filter" data-filter="SSP1" aria-pressed="false">SSP1 Motor policy <span class="num" data-count="SSP1">4</span></button>
+        </div>
+        <ol id="findings-list" class="findings__list" role="list">
+          <li class="finding finding--placeholder">Loading findings from <span class="mono">evidence/findings.json</span>…</li>
+        </ol>
+        <noscript><p>Findings are published in <a href="/evidence/findings.json">evidence/findings.json</a> and explained in the <a href="https://github.com/Jennycruzy/heirloom/blob/main/docs/reports/stage5-evidence-audit.md">evidence audit</a>.</p></noscript>
+      </div>
+    </section>
+
+    <!-- Method -->
+    <section id="method" class="method" aria-labelledby="method-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Method</p>
+          <h2 id="method-title" class="headline">Machines for facts. <em>Models only for meaning.</em></h2>
+          <p class="section-head__body">
+            Anything that can be compared exactly is compared by a deterministic check. Model
+            judgement is reserved for workflow meaning, must cite source lines, and is allowed to
+            answer <span class="mono">cannot determine</span>. Nothing a model says counts as proof by itself.
+          </p>
+        </div>
+
+        <ol class="pipeline" role="list">
+          <li class="step">
+            <span class="step__index mono">01</span>
+            <h3>Read the pinned source</h3>
+            <p>BMS maps and COBOL programs from IBM's GenApp at a pinned commit. The mainframe is never run, compiled or emulated.</p>
+            <span class="chip">Source</span>
+          </li>
+          <li class="step">
+            <span class="step__index mono">02</span>
+            <h3>Catalogue every screen</h3>
+            <p>6 screens, 20 visible actions: 18 confirmed by map and program, 2 recorded as cannot determine. 20/20 validation checks.</p>
+            <span class="chip">Bob · validated</span>
+          </li>
+          <li class="step">
+            <span class="step__index mono">03</span>
+            <h3>Rebuild the green screens</h3>
+            <p>Each map is recomposed from the catalogue onto an exact 24×80 grid and tested cell by cell.</p>
+            <span class="chip chip--ink">Deterministic</span>
+          </li>
+          <li class="step">
+            <span class="step__index mono">04</span>
+            <h3>Modernize seven tasks</h3>
+            <p>Customer inquire, add, update; motor policy inquire, add, delete, update. Python standard library, SQLite, no frameworks.</p>
+            <span class="chip">Build</span>
+          </li>
+          <li class="step">
+            <span class="step__index mono">05</span>
+            <h3>Compare exact facts</h3>
+            <p>Operations, fields, maximum lengths, numeric flags and form controls: 14 checks, no model involved.</p>
+            <span class="chip chip--ink">Deterministic</span>
+          </li>
+          <li class="step">
+            <span class="step__index mono">06</span>
+            <h3>Review workflow meaning</h3>
+            <p>Separate Bob reviewers per transaction read the COBOL behind each task. An evidence audit checks every claim against the cited lines.</p>
+            <span class="chip chip--unsure">Model · cited</span>
+          </li>
+          <li class="step">
+            <span class="step__index mono">07</span>
+            <h3>Repair only what is proven</h3>
+            <p>Each fix needs a check that fails before and passes after. A final independent review returned READY.</p>
+            <span class="chip chip--fixed">Fail → pass</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Verification -->
+    <section id="verification" class="verification" aria-labelledby="verification-title">
+      <div class="wrap verification__grid">
+        <div class="section-head section-head--tight">
+          <p class="eyebrow">Verification</p>
+          <h2 id="verification-title" class="headline">Measured, <em>not asserted.</em></h2>
+          <p class="section-head__body">
+            One command runs every suite and publishes the result this page reads. The record
+            names the commit it ran against and whether the working tree was clean.
+          </p>
+          <pre class="command"><code>git clone --recurse-submodules https://github.com/Jennycruzy/heirloom
+cd heirloom &amp;&amp; python3 scripts/verify.py</code></pre>
+          <p class="verification__meta" id="verification-meta">Reading <a href="/evidence/verification.json">evidence/verification.json</a>…</p>
+        </div>
+        <div class="suites" id="suites" aria-live="polite">
+          <div class="suite suite--placeholder">Loading suites…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Boundary -->
+    <section class="boundary" aria-labelledby="boundary-title">
+      <div class="wrap boundary__grid">
+        <div class="section-head section-head--tight">
+          <p class="eyebrow">Evidence boundary</p>
+          <h2 id="boundary-title" class="headline">What Heirloom <em>refuses to claim.</em></h2>
+          <p class="section-head__body">
+            A parity tool that guesses is worse than none. Where the source does not settle a
+            question, the answer is recorded as <span class="mono">cannot determine</span> and left open.
+          </p>
+        </div>
+        <ul class="boundary__list" id="uncertain-list" role="list">
+          <li class="boundary__item boundary__item--fixed-claim">
+            <h3>The mainframe was never run</h3>
+            <p>Every legacy claim comes from BMS and COBOL source at a pinned commit. Nothing was compiled, emulated or executed.</p>
+          </li>
+          <li class="boundary__item boundary__item--fixed-claim">
+            <h3>Every record is invented</h3>
+            <p>The demo customers and policies are fictional test data created for this project, never presented as GenApp or client data.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Explore -->
+    <section class="explore" aria-labelledby="explore-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Try it</p>
+          <h2 id="explore-title" class="headline">Walk the repaired workflows <em>yourself.</em></h2>
+        </div>
+        <div class="explore__grid">
+          <a class="scenario" href="/app/#customer/update/CUST000001">
+            <span class="scenario__tag mono">F-05 · SSC1</span>
+            <h3>Update must retrieve first</h3>
+            <p>Open Update for customer <span class="mono">CUST000001</span>. The fields stay locked until the live record is loaded.</p>
+            <span class="scenario__go mono">Open workspace →</span>
+          </a>
+          <a class="scenario" href="/app/#motor/inquire/POL001/CUST000002">
+            <span class="scenario__tag mono">F-10 · SSP1</span>
+            <h3>The wrong customer sees nothing</h3>
+            <p>Inquire policy <span class="mono">POL001</span> as customer <span class="mono">CUST000002</span>. It belongs to someone else, so it is not found.</p>
+            <span class="scenario__go mono">Open workspace →</span>
+          </a>
+          <a class="scenario" href="/app/#customer/add">
+            <span class="scenario__tag mono">F-02 · SSC1</span>
+            <h3>The system assigns the number</h3>
+            <p>Add a customer. The number field is locked and the application returns the identifier, as the legacy add program does.</p>
+            <span class="scenario__go mono">Open workspace →</span>
+          </a>
+          <a class="scenario scenario--dark" href="/dashboard/">
+            <span class="scenario__tag mono">6 maps · 24×80</span>
+            <h3>Inspect the legacy screens</h3>
+            <p>Every GenApp map rebuilt from source. Hover any field for its BMS name, position, length and attributes.</p>
+            <span class="scenario__go mono">Open dashboard →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI use -->
+    <section class="ai" aria-labelledby="ai-title">
+      <div class="wrap ai__grid">
+        <div class="section-head section-head--tight">
+          <p class="eyebrow">How AI was used</p>
+          <h2 id="ai-title" class="headline">Reviewers, <em>not oracles.</em></h2>
+        </div>
+        <dl class="ai__list">
+          <div>
+            <dt>IBM Bob</dt>
+            <dd>Planned the source extraction, launched separate customer and motor-policy reviewers to read the COBOL behind each task, and independently reviewed the repaired branch against cited source, tests and browser evidence before returning <span class="mono">READY</span>.</dd>
+          </div>
+          <div>
+            <dt>watsonx.ai Granite</dt>
+            <dd>Supplied documented fallback drafts for the screen reconstruction while Bob was reserved for evidence-heavy review. Small runtime and accessibility defects in those drafts were corrected and tested before the work was accepted.</dd>
+          </div>
+          <div>
+            <dt>Deterministic checks and people</dt>
+            <dd>Verified everything the models produced. When a Bob reviewer stalled, its report was kept unchanged and the gaps were completed by a separate evidence audit rather than presented as finished.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap site-footer__grid">
+      <div>
+        <p><strong>Heirloom</strong> by Jenny Builds. Legacy source: <a href="https://github.com/cicsdev/cics-genapp/tree/f6f3f4b2580d31b7d8dcc31ce3e3676f4cceaaaa">IBM CICS GenApp</a> at commit <span class="mono">f6f3f4b</span>, used under EPL-2.0.</p>
+        <p>IBM does not endorse Heirloom. All customer and policy records shown are invented.</p>
+      </div>
+      <nav aria-label="Footer">
+        <a href="/app/">Workspace</a>
+        <a href="/dashboard/">Legacy screens</a>
+        <a href="/evidence/findings.json">findings.json</a>
+        <a href="/evidence/verification.json">verification.json</a>
+        <a href="https://github.com/Jennycruzy/heirloom/blob/main/docs/judge-guide.md">Judge guide</a>
+        <a href="https://github.com/Jennycruzy/heirloom">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="/assets/landing.mjs"></script>
+</body>
+</html>

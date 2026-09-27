@@ -3,6 +3,8 @@ These are invented hackathon test records, not records extracted from or
 produced by a running mainframe.
 """
 
+import argparse
+
 from database import _seed_customer, _seed_motor_policy, reset_database
 
 
@@ -77,7 +79,9 @@ def seed_database(db_path=None):
 
 
 if __name__ == "__main__":
-    result = seed_database()
+    parser = argparse.ArgumentParser(description="Reset the database to invented test records")
+    parser.add_argument("--db", help="SQLite file (default: modern-app/db/heirloom.sqlite3)")
+    result = seed_database(parser.parse_args().db)
     print(
         f"Seeded {result['customers']} customers and "
         f"{result['motor_policies']} motor policies as invented test records."
