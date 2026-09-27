@@ -6,7 +6,8 @@ import {
   composeScreen,
   taskStatusLabel,
   evidenceUrl,
-  validateExpectedCounts
+  validateExpectedCounts,
+  LEGACY_COMMIT
 } from './lib.mjs';
 
 function runTests() {
@@ -67,14 +68,20 @@ function runTests() {
     );
   }
 
+  assert.strictEqual(catalogue.provenance.commit, LEGACY_COMMIT, 'Links must use the pinned GenApp commit');
   for (const task of catalogue.tasks) {
     assert.strictEqual(task.modernParityStatus, 'not-assessed');
     for (const ref of task.sourceEvidence) {
-      const path = ref.file.split('/').map(encodeURIComponent).join('/');
-      const expected = `https://github.com/Jennycruzy/heirloom/blob/main/${path}#L${ref.lineStart}-L${ref.lineEnd}`;
+      assert(ref.file.startsWith('legacy/cics-genapp/'), `${ref.file} must be legacy source`);
+      const path = ref.file.slice('legacy/cics-genapp/'.length).split('/').map(encodeURIComponent).join('/');
+      const expected = `https://github.com/cicsdev/cics-genapp/blob/${LEGACY_COMMIT}/${path}#L${ref.lineStart}-L${ref.lineEnd}`;
       assert.strictEqual(evidenceUrl(ref), expected);
     }
   }
+  assert.strictEqual(
+    evidenceUrl({ file: 'modern-app/database.py', lineStart: 3, lineEnd: 9 }, 'stage3-first-pass'),
+    'https://github.com/Jennycruzy/heirloom/blob/stage3-first-pass/modern-app/database.py#L3-L9'
+  );
 
   for (const taskId of ['T-SSP5-1', 'T-SSP5-2']) {
     const task = catalogue.tasks.find(candidate => candidate.taskId === taskId);

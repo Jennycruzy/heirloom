@@ -82,7 +82,19 @@ export function taskStatusLabel(task) {
   return 'Confirmed in the legacy screen and presentation program.';
 }
 
-export function evidenceUrl(ref) {
+export const LEGACY_PREFIX = 'legacy/cics-genapp/';
+export const LEGACY_REPOSITORY = 'https://github.com/cicsdev/cics-genapp';
+export const LEGACY_COMMIT = 'f6f3f4b2580d31b7d8dcc31ce3e3676f4cceaaaa';
+export const PROJECT_REPOSITORY = 'https://github.com/Jennycruzy/heirloom';
+
+function encodePath(path) {
+  return path.split('/').map(encodeURIComponent).join('/');
+}
+
+// Files inside the pinned submodule are not browsable under this repository's
+// URL on GitHub, so legacy citations link to the upstream file at the pinned
+// commit. Everything else links to this repository at the given ref.
+export function evidenceUrl(ref, projectRef = 'main') {
   if (
     !ref ||
     Array.isArray(ref) ||
@@ -97,8 +109,12 @@ export function evidenceUrl(ref) {
     throw new Error('Invalid evidence reference');
   }
 
-  const encodedPath = ref.file.split('/').map(encodeURIComponent).join('/');
-  return `https://github.com/Jennycruzy/heirloom/blob/main/${encodedPath}#L${ref.lineStart}-L${ref.lineEnd}`;
+  const lines = `#L${ref.lineStart}-L${ref.lineEnd}`;
+  if (ref.file.startsWith(LEGACY_PREFIX)) {
+    const legacyPath = encodePath(ref.file.slice(LEGACY_PREFIX.length));
+    return `${LEGACY_REPOSITORY}/blob/${LEGACY_COMMIT}/${legacyPath}${lines}`;
+  }
+  return `${PROJECT_REPOSITORY}/blob/${encodeURIComponent(projectRef)}/${encodePath(ref.file)}${lines}`;
 }
 
 export function validateExpectedCounts(summary) {
