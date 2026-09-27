@@ -137,6 +137,92 @@ class HttpTests(TemporaryDatabaseTest):
             json.loads(content)["error"], "Content-Type must be application/json"
         )
 
+    def test_customer_add_update_inquire_lifecycle(self):
+        customer = {field: "" for field in database.CUSTOMER_FIELDS}
+        customer.update(
+            customer_number="PARITY0001",
+            first_name="Fiction",
+            postcode="ab1 2cd",
+        )
+
+        response, content = self.request("POST", "/api/customers", customer)
+        self.assertEqual(response.status, 201)
+        self.assertEqual(json.loads(content)["data"]["postcode"], "AB1 2CD")
+
+        update = {
+            field: value
+            for field, value in customer.items()
+            if field != "customer_number"
+        }
+        update["last_name"] = "Updated"
+        response, content = self.request(
+            "PUT", "/api/customers/PARITY0001", update
+        )
+        self.assertEqual(response.status, 200)
+        self.assertEqual(json.loads(content)["data"]["last_name"], "Updated")
+
+        response, content = self.request("GET", "/api/customers/PARITY0001")
+        self.assertEqual(response.status, 200)
+        self.assertEqual(json.loads(content)["data"]["first_name"], "Fiction")
+
+        response, content = self.request("DELETE", "/api/customers/PARITY0001")
+        self.assertEqual(response.status, 404)
+        self.assertEqual(json.loads(content), {"error": "API route not found"})
+
+    def test_motor_policy_add_update_inquire_delete_lifecycle(self):
+        policy = {field: "" for field in database.MOTOR_POLICY_FIELDS}
+        policy.update(
+            policy_number="PARITY0001",
+            customer_number="CUST000001",
+            car_make="Fiction",
+        )
+
+        response, content = self.request("POST", "/api/motor-policies", policy)
+        self.assertEqual(response.status, 201)
+        self.assertEqual(json.loads(content)["data"]["car_make"], "Fiction")
+
+        update = {
+            field: value
+            for field, value in policy.items()
+            if field != "policy_number"
+        }
+        update["car_colour"] = "Blue"
+        response, content = self.request(
+            "PUT", "/api/motor-policies/PARITY0001", update
+        )
+        self.assertEqual(response.status, 200)
+        self.assertEqual(json.loads(content)["data"]["car_colour"], "Blue")
+
+        response, content = self.request(
+            "GET", "/api/motor-policies/PARITY0001"
+        )
+        self.assertEqual(response.status, 200)
+        self.assertEqual(json.loads(content)["data"]["customer_number"], "CUST000001")
+
+        response, content = self.request(
+            "DELETE", "/api/motor-policies/PARITY0001"
+        )
+        self.assertEqual(response.status, 200)
+        self.assertEqual(json.loads(content)["data"]["policy_number"], "PARITY0001")
+
+        response, content = self.request(
+            "GET", "/api/motor-policies/PARITY0001"
+        )
+        self.assertEqual(response.status, 404)
+        self.assertEqual(json.loads(content), {"error": "Motor policy not found"})
+
+    def test_motor_policy_requires_an_existing_customer(self):
+        policy = {field: "" for field in database.MOTOR_POLICY_FIELDS}
+        policy.update(
+            policy_number="PARITY0002",
+            customer_number="MISSING001",
+        )
+        response, content = self.request("POST", "/api/motor-policies", policy)
+        self.assertEqual(response.status, 400)
+        self.assertEqual(
+            json.loads(content), {"error": "Referenced customer does not exist"}
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
